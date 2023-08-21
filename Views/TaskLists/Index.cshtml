@@ -4,38 +4,195 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+<<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1>Twoje listy zadań</h1>
+    <p>
+        <a asp-action="Create" class="btn btn-outline-dark">Create New</a>
+    </p>
+</div>
+<br />
+<table class="table table-borderless">
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+            @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
+            @Html.DisplayFor(modelItem => item.CreateDate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.TaskListId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TaskListId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TaskListId">Delete</a>
+            <a asp-action="Edit" asp-route-id="@item.TaskListId">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.TaskListId">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.TaskListId">Delete</a>
+            </td>*@
+                <td>
+                    <div class="card" style="height:200px;">
+                        <div class="card-body">
+                            <a asp-action="Details" asp-route-id="@item.TaskListId" style="text-decoration:none;color:black;"><h5 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h5></a><br><br>
+                            <p class="card-text">
+                                <a asp-action="Edit" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Edit</a>
+
+                                <a asp-action="Delete" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Delete</a>
+                            </p>
+                            <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height:10px; ">
+                                <div class="progress-bar bg-success" style="width: 25%; background-color:black !important;"></div>
+                            </div>
+                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                        </div>
+
+                    </div>
+                </td>
+                <td>
+                    <div class="card" style="height:200px;">
+                        <div class="card-body">
+                            <a asp-action="Details" asp-route-id="@item.TaskListId" style="text-decoration:none;color:black;"><h5 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h5></a><br><br>
+                            <p class="card-text">
+                                <a asp-action="Edit" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Edit</a>
+
+                                <a asp-action="Delete" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Delete</a>
+                            </p>
+                            <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height:10px; ">
+                                <div class="progress-bar bg-success" style="width: 25%; background-color:black !important;"></div>
+                            </div>
+                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                        </div>
+
+                    </div>
+                </td>
+                <td>
+                    <div class="card" style="height:200px;">
+                        <div class="card-body">
+                            <a asp-action="Details" asp-route-id="@item.TaskListId" style="text-decoration:none;color:black;"><h5 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h5></a><br><br>
+                            <p class="card-text">
+                                <a asp-action="Edit" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Edit</a>
+
+                                <a asp-action="Delete" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Delete</a>
+                            </p>
+                            <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height:10px; ">
+                                <div class="progress-bar bg-success" style="width: 25%; background-color:black !important;"></div>
+                            </div>
+                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                @*<td>
+            @Html.DisplayFor(modelItem => item.Title)
             </td>
-        </tr>
-}
+            <td>
+            @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+            <td>
+            <a asp-action="Edit" asp-route-id="@item.TaskListId">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.TaskListId">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.TaskListId">Delete</a>
+            </td>*@
+                <td>
+                    <div class="card" style="height:200px;">
+                        <div class="card-body">
+                            <a asp-action="Details" asp-route-id="@item.TaskListId" style="text-decoration:none;color:black;"><h5 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h5></a><br><br>
+                            <p class="card-text">
+                                <a asp-action="Edit" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Edit</a>
+
+                                <a asp-action="Delete" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Delete</a>
+                            </p>
+                            <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height:10px; ">
+                                <div class="progress-bar bg-success" style="width: 25%; background-color:black !important;"></div>
+                            </div>
+                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                        </div>
+
+                    </div>
+                </td>
+                <td>
+                    <div class="card" style="height:200px;">
+                        <div class="card-body">
+                            <a asp-action="Details" asp-route-id="@item.TaskListId" style="text-decoration:none;color:black;"><h5 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h5></a><br><br>
+                            <p class="card-text">
+                                <a asp-action="Edit" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Edit</a>
+
+                                <a asp-action="Delete" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Delete</a>
+                            </p>
+                            <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height:10px; ">
+                                <div class="progress-bar bg-success" style="width: 25%; background-color:black !important;"></div>
+                            </div>
+                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                        </div>
+
+                    </div>
+                </td>
+                <td>
+                    <div class="card" style="height:200px;">
+                        <div class="card-body">
+                            <a asp-action="Details" asp-route-id="@item.TaskListId" style="text-decoration:none;color:black;"><h5 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h5></a><br><br>
+                            <p class="card-text">
+                                <a asp-action="Edit" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Edit</a>
+
+                                <a asp-action="Delete" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Delete</a>
+                            </p>
+                            <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height:10px; ">
+                                <div class="progress-bar bg-success" style="width: 25%; background-color:black !important;"></div>
+                            </div>
+                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                @*<td>
+            @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+            @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+            <td>
+            <a asp-action="Edit" asp-route-id="@item.TaskListId">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.TaskListId">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.TaskListId">Delete</a>
+            </td>*@
+                <td>
+                    <div class="card" style="height:200px;">
+                        <div class="card-body">
+                            <a asp-action="Details" asp-route-id="@item.TaskListId" style="text-decoration:none;color:black;"><h5 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h5></a><br><br>
+                            <p class="card-text">
+                                <a asp-action="Edit" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Edit</a>
+
+                                <a asp-action="Delete" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Delete</a>
+                            </p>
+                            <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height:10px; ">
+                                <div class="progress-bar bg-success" style="width: 25%; background-color:black !important;"></div>
+                            </div>
+                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                        </div>
+
+                    </div>
+                </td>
+                <td>
+                    <div class="card" style="height:200px;">
+                        <div class="card-body">
+                            <a asp-action="Details" asp-route-id="@item.TaskListId" style="text-decoration:none;color:black;"><h5 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h5></a><br><br>
+                            <p class="card-text">
+                                <a asp-action="Edit" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Edit</a>
+
+                                <a asp-action="Delete" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Delete</a>
+                            </p>
+                            <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height:10px; ">
+                                <div class="progress-bar bg-success" style="width: 25%; background-color:black !important;"></div>
+                            </div>
+                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                        </div>
+
+                    </div>
+                </td>
+                <td>
+                   
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
