@@ -3,7 +3,59 @@
 @{
     ViewData["Title"] = "Szczegóły";
 }
-<div class=" p-5" style="border-radius:5vh">
+<div class=" p-5" style="border-radius:5vh;">
+    <div class="t-list-todo" style="">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
     <div class="no-gradient">
         <div style="display: flex; justify-content: space-between; align-items: center;padding-right:20px">
             <h1> @Html.DisplayFor(modelItem => Model.Title)</h1>
@@ -16,12 +68,9 @@
         <div>
             <p>Data utworzenia: @Html.DisplayFor(model => model.CreateDate)</p>
             <a asp-action="Edit" asp-route-id="@Model?.TaskListId" class="btn btn-outline-dark">Edytuj</a>
-            <a asp-action="Delete" asp-route-id="@Model?.TaskListId" class="btn btn-outline-dark">Usuń</a>
+            <a asp-action="Delete" asp-route-id="@Model?.TaskListId" class="btn btn-outline-danger">Usuń</a>
             <hr />
 
         </div>
     </div>
 </div>
-<script>
-    document.body.classList.add('gradient');
-</script>
