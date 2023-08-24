@@ -1,6 +1,6 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@*@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject UserManager<IdentityUser> UserManager*@
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,10 +24,19 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                    
                     <ul class="navbar-nav flex-grow-1">
-                        @*@if (SignInManager.IsSignedIn(User))
+                        @*@if(User.Identity.IsAuthenticated)
                         {*@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="TaskLists" asp-action="Index">Listy zadań</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Tasks" asp-action="Index">Zadania</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Priorities" asp-action="Index">Priorytety</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Kategorie</a>
                             </li>
                         @*}*@
                     </ul>

@@ -31,6 +31,24 @@ footer {
     background: white;
 }
 
+.gradient {
+    background: linear-gradient(48deg, #f2a017, #ffdc4f, #f7683e, #ffc100, #f3bd12, #fb7123, #df3d0d);
+    background-size: 1400% 1400%;
+    -webkit-animation: AnimationName 32s ease infinite;
+    -moz-animation: AnimationName 32s ease infinite;
+    animation: AnimationName 32s ease infinite;
+}
+
+.no-gradient {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 20px;
+    border-radius: 30px;
+}
+
 @-webkit-keyframes AnimationName {
     0% {
         background-position: 0% 78%
@@ -72,3 +90,4 @@ footer {
         background-position: 0% 78%
     }
 }
+

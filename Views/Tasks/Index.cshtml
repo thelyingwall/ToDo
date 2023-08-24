@@ -1,31 +1,32 @@
 ﻿@model IEnumerable<ToDo.Models.Task>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Zadania";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1>Zadania</h1>
+    <p>
+        <a asp-action="Create" class="btn btn-outline-dark">Nowe zadanie</a>
+    </p>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                Tytuł
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Opis
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsDone)
+                Zrobione
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreateDate)
+                Data utworzenia
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Deadline)
+                Termin ukończenia
             </th>
             <th></th>
         </tr>
@@ -49,9 +50,9 @@
                 @Html.DisplayFor(modelItem => item.Deadline)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.TaskId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TaskId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TaskId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.TaskId" class="btn btn-outline-dark">Edycja</a>
+                    <a asp-action="Details" asp-route-id="@item.TaskId" class="btn btn-outline-dark">Szczegóły</a>
+                    <a asp-action="Delete" asp-route-id="@item.TaskId" class="btn btn-outline-dark">Usuń</a>
             </td>
         </tr>
 }

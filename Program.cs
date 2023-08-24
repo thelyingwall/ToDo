@@ -7,7 +7,7 @@ namespace ToDo
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async System.Threading.Tasks.Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +18,7 @@ namespace ToDo
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
 
@@ -55,6 +56,38 @@ namespace ToDo
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
+            using(var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                var roles = new[] { "Admin", "Manager", "Member" };
+                foreach (var role in roles)
+                {
+                    if (!await roleManager.RoleExistsAsync(role))
+                        await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
+            using (var scope = app.Services.CreateScope())
+            {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                string email = "admin@admin.com";
+                string password = "Haslo123.";
+
+                if(await userManager.FindByEmailAsync(email) == null)
+                {
+                    var user = new IdentityUser();
+                    user.UserName= email;
+                    user.Email=email;
+
+                    var createUserResult = await userManager.CreateAsync(user, password);
+                    if (createUserResult.Succeeded)
+                    {
+                        userManager.AddToRoleAsync(user, "Admin");
+                        userManager.AddToRoleAsync(user, "Manager");
+                        userManager.AddToRoleAsync(user, "Member");
+                    }
+                }
+            }
             app.Run();
         }
     }

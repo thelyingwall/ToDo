@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<ToDo.Models.TaskList>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Listy zadań";
 }
 
 <div style="display: flex; justify-content: space-between; align-items: center;">
     <h1>Twoje listy zadań</h1>
     <p>
-        <a asp-action="Create" class="btn btn-outline-dark">Create New</a>
+        <a asp-action="Create" class="btn btn-outline-dark">Nowa lista</a>
     </p>
 </div>
 <br />
@@ -29,8 +29,8 @@
                             </div>
                             <br><br>
                             <p class="card-text">
-                                <a asp-action="Details" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Details</a>
-                                <a asp-action="Edit" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Edit</a>
+                                <a asp-action="Details" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Szczegóły</a>
+                                <a asp-action="Edit" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Edycja</a>
                             </p>
 
                             <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height:10px; ">

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -57,10 +58,12 @@ namespace ToDo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TaskId,Title,Description,IsDone,CreateDate,Deadline")] ToDo.Models.Task task)
+        public async Task<IActionResult> Create([Bind("TaskId,Title,Description,Deadline")] ToDo.Models.Task task)
         {
             if (ModelState.IsValid)
             {
+                task.CreateDate = DateTime.Now;
+                task.IsDone = false;
                 _context.Add(task);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -89,7 +92,7 @@ namespace ToDo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TaskId,Title,Description,IsDone,CreateDate,Deadline")] ToDo.Models.Task task)
+        public async Task<IActionResult> Edit(int id, [Bind("TaskId,Title,Description,IsDone,Deadline")] ToDo.Models.Task task)
         {
             if (id != task.TaskId)
             {
@@ -100,6 +103,8 @@ namespace ToDo.Controllers
             {
                 try
                 {
+                    var existingTaskList = await _context.Task.FindAsync(task.TaskId);
+                    task.CreateDate = existingTaskList.CreateDate; 
                     _context.Update(task);
                     await _context.SaveChangesAsync();
                 }

@@ -1,19 +1,20 @@
 ﻿@model IEnumerable<ToDo.Models.Priority>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Rodzaje priorytetów";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1>Rodzaje priorytetów</h1>
+    <p>
+        <a asp-action="Create" class="btn btn-outline-dark">Nowy priorytet</a>
+    </p>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.PriorityName)
+                Nazwa
             </th>
             <th></th>
         </tr>
@@ -25,9 +26,9 @@
                 @Html.DisplayFor(modelItem => item.PriorityName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.PriorityId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PriorityId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PriorityId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.PriorityId" class="btn btn-outline-dark">Edycja</a>
+                <a asp-action="Details" asp-route-id="@item.PriorityId" class="btn btn-outline-dark">Szczegóły</a> 
+                    <a asp-action="Delete" asp-route-id="@item.PriorityId" class="btn btn-outline-dark">Usuń</a>
             </td>
         </tr>
 }

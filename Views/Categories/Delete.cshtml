@@ -1,18 +1,18 @@
 ﻿@model ToDo.Models.Category
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Usuwanie";
 }
 
-<h1>Delete</h1>
+<h1>Usuwanie</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Jesteś pewien, że chcesz usunąć?</h3>
 <div>
-    <h4>Category</h4>
+    <h4>Kategoria</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoryName)
+            Nazwa
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.CategoryName)
@@ -21,7 +21,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="CategoryId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Usuń" class="btn btn-danger" /> 
+        <a asp-action="Index" class="btn btn-outline-dark">Powrót</a>
     </form>
 </div>
