@@ -4,60 +4,9 @@
     ViewData["Title"] = "Szczegóły";
 }
 <div class=" p-5" style="border-radius:5vh;">
-    <div class="t-list-todo" style="">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
+    <partial name="_Background" />
     <div class="no-gradient">
-        <div style="display: flex; justify-content: space-between; align-items: center;padding-right:20px">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
             <h1> @Html.DisplayFor(modelItem => Model.Title)</h1>
 
             <a asp-action="Index" asp-route-id="@Model?.TaskListId">
