@@ -25,9 +25,9 @@ namespace ToDo.Controllers
         // GET: Tasks
         public async Task<IActionResult> Index()
         {
-              return _context.Task != null ? 
-                          View(await _context.Task.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Task'  is null.");
+            return _context.Task != null ?
+                        View(await _context.Task.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.Task'  is null.");
         }
 
         // GET: Tasks/Details/5
@@ -112,7 +112,12 @@ namespace ToDo.Controllers
                 return NotFound();
             }
             TaskViewModel taskViewModel = new TaskViewModel();
+            task.TaskList = _context.TaskList.Single(x => x.TaskListId == task.TaskListId);
+            task.Category = _context.Category.Single(x => x.CategoryId == task.CategoryId);
+            task.Priority = _context.Priority.Single(x => x.PriorityId == task.PriorityId);
             taskViewModel.Task = task;
+            taskViewModel.PriorityId = task.PriorityId;
+            taskViewModel.CategoryId = task.CategoryId;
             taskViewModel.Categories = _context.Category.Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
             taskViewModel.Priorities = _context.Priority.Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
             Console.WriteLine(taskViewModel.Task.ToString());
@@ -126,7 +131,7 @@ namespace ToDo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TaskViewModel taskViewModel)
         {
-            if (id != taskViewModel.Task.TaskId)
+            if (!_context.Task.Any(x => x.TaskId == id))
             {
                 return NotFound();
             }
@@ -135,9 +140,15 @@ namespace ToDo.Controllers
             {
                 try
                 {
-                    var existingTaskList = await _context.Task.FindAsync(taskViewModel.Task.TaskId);
-                    taskViewModel.Task.CreateDate = existingTaskList.CreateDate; 
-                    _context.Update(taskViewModel.Task);
+                    var existingTask = await _context.Task.FindAsync(id);
+                    existingTask.Category = _context.Category.Single(x => x.CategoryId == taskViewModel.CategoryId);
+                    existingTask.Priority = _context.Priority.Single(x => x.PriorityId == taskViewModel.PriorityId);
+
+                    existingTask.Title = taskViewModel.Task.Title;
+                    existingTask.Description = taskViewModel.Task.Description;
+                    existingTask.IsDone = taskViewModel.Task.IsDone;
+                    existingTask.Deadline = taskViewModel.Task.Deadline;
+                    _context.Update(existingTask);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -151,9 +162,9 @@ namespace ToDo.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Tasks", new { id });
             }
-            Console.WriteLine(taskViewModel.Task.ToString());
+            
             return View(taskViewModel);
         }
 
@@ -189,14 +200,14 @@ namespace ToDo.Controllers
             {
                 _context.Task.Remove(task);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TaskExists(int id)
         {
-          return (_context.Task?.Any(e => e.TaskId == id)).GetValueOrDefault();
+            return (_context.Task?.Any(e => e.TaskId == id)).GetValueOrDefault();
         }
     }
 }
