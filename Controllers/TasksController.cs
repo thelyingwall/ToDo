@@ -202,7 +202,8 @@ namespace ToDo.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "TaskLists", new { id = task.TaskListId });
         }
 
         private bool TaskExists(int id)

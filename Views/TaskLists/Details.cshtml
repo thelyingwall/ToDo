@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Szczegóły";
     float temp = (float)Model.Tasks.Count(x => x.IsDone == true) / (float)Model.Tasks.Count();
-    int wykonano = (int)Math.Round(temp*100f);
+    int wykonano = ((float)Model.Tasks.Count(x => x.IsDone == true) == 0 && (float)Model.Tasks.Count() == 0) ? 0 : (int)Math.Round(temp * 100f);
 }
 <div class=" p-5" style="border-radius:5vh;">
     <partial name="_Background" />
