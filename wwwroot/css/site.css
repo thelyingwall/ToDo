@@ -27,6 +27,10 @@ body {
     animation: AnimationName 32s ease infinite;
 }
 
+.strikethrough {
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+}
 .card {
     margin: 5px;
 }

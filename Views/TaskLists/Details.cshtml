@@ -25,7 +25,7 @@
                 </div>
                 <div class="col-6 col-md-4 text-end"><a href="@Url.Action("Create", "Tasks", new { taskListId = Model.TaskList.TaskListId })" class="btn btn-outline-dark">Dodaj zadanie</a></div>
             </div><br />
-            <div class="progress" role="progressbar" aria-label="Success example" aria-valuemin="0" aria-valuemax="100" style="height:12px;background-color:white; ">
+            <div class="progress" role="progressbar" aria-label="Success example" aria-valuemin="0" aria-valuemax="100" style="height:12px;background-color:white; border-radius:50px;">
                 <div class="progress-bar bg-success" style="width: @wykonano%; background-color:black !important;font-size:12px;">@wykonano%</div>
             </div>
             <hr />
@@ -39,13 +39,10 @@
                             Tytuł
                         </th>
                         <th>
-                            Termin ukończenia
-                        </th>
-                        <th>
-                            Kategoria
-                        </th>
-                        <th>
                             Priorytet
+                        </th>
+                        <th>
+                            Termin ukończenia
                         </th>
                         <th></th>
                     </tr>
@@ -57,22 +54,20 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.IsDone)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Title)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Deadline)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                            <td class="@(item.IsDone==true ? "strikethrough" : "")">
+                                <a href="@Url.Action("Details", "Tasks", new { id =item.TaskId })" style="text-decoration:none;color:black;">@Html.DisplayFor(modelItem => item.Title)</a>
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Priority.PriorityName)
                             </td>
+                            <td class="@(item.IsDone==true ? "strikethrough" : "")">
+                                @Html.DisplayFor(modelItem => item.Deadline)
+                            </td>
+
                             <td>
-                                <a href="@Url.Action("Edit", "Tasks", new { id =item.TaskId })" class="btn btn-outline-dark">Edycja</a>
-                                <a href="@Url.Action("Details", "Tasks", new { id =item.TaskId })" class="btn btn-outline-dark">Szczegóły</a>
-                                <a href="@Url.Action("Delete", "Tasks", new { id =item.TaskId })" class="btn btn-outline-danger">Usuń</a>
+                                @*<a href="@Url.Action("Edit", "Tasks", new { id =item.TaskId })" class="btn btn-outline-dark">Edycja</a>*@
+                                @*<a href="@Url.Action("Details", "Tasks", new { id =item.TaskId })"><i class="bi bi-list" style="color: black;"></i></a>*@
+                                <a href="@Url.Action("Delete", "Tasks", new { id =item.TaskId })"> <i style="color:black;" class="bi bi-trash"></i></a>
                             </td>
                         </tr>
                     }
