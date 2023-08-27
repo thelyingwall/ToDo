@@ -44,7 +44,10 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
-
+            task.TaskList = _context.TaskList.Single(x => x.TaskListId == task.TaskListId);
+            task.Category = _context.Category.Single(x => x.CategoryId == task.CategoryId);
+            task.Priority = _context.Priority.Single(x => x.PriorityId == task.PriorityId);
+            Console.WriteLine(task.ToString());
             return View(task);
         }
 
@@ -74,10 +77,6 @@ namespace ToDo.Controllers
         {
             if (ModelState.IsValid)
             {
-                //TaskList taskList = _context.TaskList.Single(x => x.TaskListId == taskViewModel.TaskListId);
-                //Category category = _context.Category.Single(x => x.CategoryId == taskViewModel.CategoryId);
-                //Priority priority = _context.Priority.Single(x => x.PriorityId == taskViewModel.PriorityId);
-
                 Models.Task newtask = new Models.Task
                 {
                     Title = taskViewModel.Task.Title,
@@ -112,7 +111,12 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
-            return View(task);
+            TaskViewModel taskViewModel = new TaskViewModel();
+            taskViewModel.Task = task;
+            taskViewModel.Categories = _context.Category.Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
+            taskViewModel.Priorities = _context.Priority.Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
+            Console.WriteLine(taskViewModel.Task.ToString());
+            return View(taskViewModel);
         }
 
         // POST: Tasks/Edit/5
@@ -120,9 +124,9 @@ namespace ToDo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TaskId,Title,Description,IsDone,Deadline")] ToDo.Models.Task task)
+        public async Task<IActionResult> Edit(int id, TaskViewModel taskViewModel)
         {
-            if (id != task.TaskId)
+            if (id != taskViewModel.Task.TaskId)
             {
                 return NotFound();
             }
@@ -131,14 +135,14 @@ namespace ToDo.Controllers
             {
                 try
                 {
-                    var existingTaskList = await _context.Task.FindAsync(task.TaskId);
-                    task.CreateDate = existingTaskList.CreateDate; 
-                    _context.Update(task);
+                    var existingTaskList = await _context.Task.FindAsync(taskViewModel.Task.TaskId);
+                    taskViewModel.Task.CreateDate = existingTaskList.CreateDate; 
+                    _context.Update(taskViewModel.Task);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TaskExists(task.TaskId))
+                    if (!TaskExists(taskViewModel.Task.TaskId))
                     {
                         return NotFound();
                     }
@@ -149,7 +153,8 @@ namespace ToDo.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(task);
+            Console.WriteLine(taskViewModel.Task.ToString());
+            return View(taskViewModel);
         }
 
         // GET: Tasks/Delete/5

@@ -27,8 +27,9 @@ namespace ToDo.Models
                 Task z2 = new Task { Title = "Zadanie 2", Description = "Opis", TaskListId = 1, TaskList = l1, PriorityId = 1, Priority = pilne, CategoryId = 2, Category = dom };
                 Task z3 = new Task { Title = "Zadanie 3", Description = "Opis", TaskListId = 1, TaskList = l1, PriorityId = 3, Priority = niski, CategoryId = 3, Category = zakupy };
 
-                // Look for any movies.
-
+                //l1.Tasks.Add(z1);
+                //l1.Tasks.Add(z2);
+                //l1.Tasks.Add(z3);
 
                 if (!context.Priority.Any())
                 {
