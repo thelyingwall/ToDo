@@ -1,4 +1,4 @@
-﻿@model ToDo.Models.TaskList
+﻿@model ToDo.ViewModels.TaskListViewModel
 
 @{
     ViewData["Title"] = "Szczegóły";
@@ -7,22 +7,72 @@
     <partial name="_Background" />
     <div class="no-gradient">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h1> @Html.DisplayFor(modelItem => Model.Title)</h1>
+            <h1> @Html.DisplayFor(modelItem => Model.TaskList.Title)</h1>
 
-            <a asp-action="Index" asp-route-id="@Model?.TaskListId">
+            <a asp-action="Index" asp-route-id="@Model?.TaskList.TaskListId">
                 <i style="text-decoration:none;color:black;" class="bi bi-x-lg"></i>
             </a>
         </div>
 
         <div>
-            <p>Data utworzenia: @Html.DisplayFor(model => model.CreateDate)</p>
+            <p>Data utworzenia: @Html.DisplayFor(model => model.TaskList.CreateDate)</p>
             <div class="row g-0 row-cols-xs-1 row-cols-xxs-1">
-                <div class="col-sm-6 col-md-8"> <a asp-action="Edit" asp-route-id="@Model?.TaskListId" class="btn btn-outline-dark">Edytuj</a>
-                    <a asp-action="Delete" asp-route-id="@Model?.TaskListId" class="btn btn-outline-danger">Usuń</a>
+                <div class="col-sm-6 col-md-8">
+                    <a asp-action="Edit" asp-route-id="@Model?.TaskList.TaskListId" class="btn btn-outline-dark">Edytuj</a>
+                    <a asp-action="Delete" asp-route-id="@Model?.TaskList.TaskListId" class="btn btn-outline-danger">Usuń</a>
                 </div>
-                <div class="col-6 col-md-4 text-end"><a href="@Url.Action("Create", "Tasks", new { taskListId = Model.TaskListId })" class="btn btn-outline-dark">Dodaj zadanie</a></div>
+                <div class="col-6 col-md-4 text-end"><a href="@Url.Action("Create", "Tasks", new { taskListId = Model.TaskList.TaskListId })" class="btn btn-outline-dark">Dodaj zadanie</a></div>
             </div>
             <hr />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Zrobione
+                        </th>
+                        <th>
+                            Tytuł
+                        </th>
+                        <th>
+                            Termin ukończenia
+                        </th>
+                        <th>
+                            Kategoria
+                        </th>
+                        <th>
+                            Priorytet
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Tasks)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsDone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Deadline)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Priority.PriorityName)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Edit", "Tasks", new { id =item.TaskId })" class="btn btn-outline-dark">Edycja</a>
+                                <a href="@Url.Action("Details", "Tasks", new { id =item.TaskId })" class="btn btn-outline-dark">Szczegóły</a>
+                                <a href="@Url.Action("Delete", "Tasks", new { id =item.TaskId })" class="btn btn-outline-danger">Usuń</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

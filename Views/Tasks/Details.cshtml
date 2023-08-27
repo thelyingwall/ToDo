@@ -10,34 +10,44 @@
     <h4>Zadanie</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Tytuł
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Opis
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Zrobione
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IsDone)
         </dd>
-        <dt class = "col-sm-2">
+@*        <dd class="col-sm-10">
+            @if (Model.IsDone)
+            {
+                <span style="color: green;">TAK</span>
+            }
+            else
+            {
+                <span style="color: red;">NIE</span>
+            }
+        </dd>*@
+        <dt class="col-sm-2">
             Data utworzenia
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CreateDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Termin ukończenia
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Deadline)
         </dd>
         <dt class="col-sm-2">
@@ -62,5 +72,5 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.TaskId" class="btn btn-outline-dark">Edycja</a>
-    <a asp-action="Index" class="btn btn-outline-dark">Powrót</a>
+    <a href="javascript:history.back()" class="btn btn-outline-dark">Powrót</a>
 </div>

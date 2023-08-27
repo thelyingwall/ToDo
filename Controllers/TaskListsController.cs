@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ToDo.Data;
 using ToDo.Models;
+using ToDo.ViewModels;
 
 namespace ToDo.Controllers
 {
@@ -43,8 +44,14 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
-
-            return View(taskList);
+            TaskListViewModel taskListViewModel = new TaskListViewModel();
+            foreach (var item in _context.Task.Where(x => x.TaskListId == id))
+            {
+                Console.WriteLine(item.Title.ToString());
+            }
+            taskListViewModel.TaskList = taskList;
+            taskListViewModel.Tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
+            return View(taskListViewModel);
         }
 
         // GET: TaskLists/Create
