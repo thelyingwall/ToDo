@@ -23,9 +23,9 @@ namespace ToDo.Models
 
                 TaskList l1 = new TaskList { Title = "Nowa lista zadań" };
 
-                Task z1 = new Task { Title = "Zadanie 1", Description = "Opis", TaskList = l1, Priority = wazne, Category = praca };
-                Task z2 = new Task { Title = "Zadanie 2", Description = "Opis", TaskList = l1, Priority = pilne, Category = dom };
-                Task z3 = new Task { Title = "Zadanie 3", Description = "Opis", TaskList = l1, Priority = niski, Category = zakupy };
+                Task z1 = new Task { Title = "Zadanie 1", Description = "Opis", TaskListId=1, TaskList = l1, PriorityId=2, Priority = wazne, CategoryId=1, Category = praca };
+                Task z2 = new Task { Title = "Zadanie 2", Description = "Opis", TaskListId = 1, TaskList = l1, PriorityId = 1, Priority = pilne, CategoryId = 2, Category = dom };
+                Task z3 = new Task { Title = "Zadanie 3", Description = "Opis", TaskListId = 1, TaskList = l1, PriorityId = 3, Priority = niski, CategoryId = 3, Category = zakupy };
 
                 // Look for any movies.
 

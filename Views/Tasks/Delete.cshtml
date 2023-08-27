@@ -46,6 +46,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="TaskId" />
         <input type="submit" value="Usuń" class="btn btn-danger" /> 
-        <a asp-action="Index" class="btn btn-danger">Powrót</a>
+        <a href="javascript:history.back()" class="btn btn-outline-dark">Powrót</a>
     </form>
 </div>

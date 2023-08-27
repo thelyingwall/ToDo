@@ -1,4 +1,4 @@
-﻿@model ToDo.Models.Task
+﻿@model ToDo.ViewModels.TaskViewModel
 
 @{
     ViewData["Title"] = "Nowe zadanie";
@@ -11,24 +11,40 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.TaskListId"/>
             <div class="form-group">
-                <label asp-for="Title" class="control-label">Tytuł</label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="@Model.Task.Title" class="control-label">Tytuł</label>
+                <input asp-for="@Model.Task.Title" class="form-control" value="Tytuł test"/>
+                <span asp-validation-for="@Model.Task.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label">Opis</label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="@Model.Task.Description" class="control-label">Opis</label>
+                <input asp-for="@Model.Task.Description" class="form-control" value="Opis test" />
+                <span asp-validation-for="@Model.Task.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Deadline" class="control-label">Termin ukończenia</label>
-                <input asp-for="Deadline" class="form-control" />
-                <span asp-validation-for="Deadline" class="text-danger"></span>
-            </div><br />
+                <label asp-for="@Model.Task.Deadline" class="control-label">Termin ukończenia</label>
+                <input asp-for="@Model.Task.Deadline" class="form-control" />
+                <span asp-validation-for="@Model.Task.Deadline" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Priorytet</label>
+                <select name="PriorityId" class="form-select" asp-for="PriorityId" asp-items="@Model.Priorities">
+                   
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Kategoria</label>
+                <select name="CategoryId" class="form-select" asp-for="CategoryId" asp-items="@Model.Categories">
+                 
+                </select>
+            </div>
+            
+            <br />
             <div class="form-group">
                 <input type="submit" value="Utwórz" class="btn btn-outline-dark" />
-                <a asp-action="Index" class="btn btn-outline-dark">Powrót</a>
+                <a href="javascript:history.back()" class="btn btn-outline-dark">Powrót</a>
             </div>
         </form>
     </div>

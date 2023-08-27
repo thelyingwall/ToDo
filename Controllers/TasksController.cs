@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ToDo.Data;
 using ToDo.Models;
+using ToDo.ViewModels;
 
 namespace ToDo.Controllers
 {
@@ -48,9 +49,20 @@ namespace ToDo.Controllers
         }
 
         // GET: Tasks/Create
-        public IActionResult Create()
+        public IActionResult Create(int taskListId)
         {
-            return View();
+            var taskList = _context.TaskList.FirstOrDefault(tl => tl.TaskListId == taskListId);
+
+            if (taskList == null)
+            {
+                return NotFound();
+            }
+
+            TaskViewModel taskViewModel = new TaskViewModel();
+            taskViewModel.Categories = _context.Category.Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
+            taskViewModel.Priorities = _context.Priority.Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
+            taskViewModel.TaskListId = taskListId;
+            return View(taskViewModel);
         }
 
         // POST: Tasks/Create
@@ -58,17 +70,33 @@ namespace ToDo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TaskId,Title,Description,Deadline")] ToDo.Models.Task task)
+        public async Task<IActionResult> Create(TaskViewModel taskViewModel)
         {
             if (ModelState.IsValid)
             {
-                task.CreateDate = DateTime.Now;
-                task.IsDone = false;
-                _context.Add(task);
+                //TaskList taskList = _context.TaskList.Single(x => x.TaskListId == taskViewModel.TaskListId);
+                //Category category = _context.Category.Single(x => x.CategoryId == taskViewModel.CategoryId);
+                //Priority priority = _context.Priority.Single(x => x.PriorityId == taskViewModel.PriorityId);
+
+                Models.Task newtask = new Models.Task
+                {
+                    Title = taskViewModel.Task.Title,
+                    Description = taskViewModel.Task.Description,
+                    IsDone = false,
+                    CreateDate = DateTime.Now,
+                    Deadline = taskViewModel.Task.Deadline,
+                    TaskList = _context.TaskList.Single(x => x.TaskListId == taskViewModel.TaskListId),
+                    Category = _context.Category.Single(x => x.CategoryId == taskViewModel.CategoryId),
+                    Priority = _context.Priority.Single(x => x.PriorityId == taskViewModel.PriorityId)
+
+                };
+                Console.WriteLine(newtask.ToString());
+                _context.Task.Add(newtask);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("Details", "TaskLists", new { id = taskViewModel.TaskListId });
             }
-            return View(task);
+            return View(taskViewModel);
         }
 
         // GET: Tasks/Edit/5

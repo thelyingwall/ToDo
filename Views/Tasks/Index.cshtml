@@ -28,33 +28,52 @@
             <th>
                 Termin ukończenia
             </th>
+            <th>
+                Lista zadań
+            </th>
+            <th>
+                Kategoria
+            </th>
+            <th>
+                Priorytet
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Deadline)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsDone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deadline)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TaskList.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Priority.PriorityName)
+                </td>
+                <td>
                     <a asp-action="Edit" asp-route-id="@item.TaskId" class="btn btn-outline-dark">Edycja</a>
                     <a asp-action="Details" asp-route-id="@item.TaskId" class="btn btn-outline-dark">Szczegóły</a>
                     <a asp-action="Delete" asp-route-id="@item.TaskId" class="btn btn-outline-danger">Usuń</a>
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
