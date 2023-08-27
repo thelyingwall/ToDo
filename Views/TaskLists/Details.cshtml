@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Szczegóły";
+    float temp = (float)Model.Tasks.Count(x => x.IsDone == true) / (float)Model.Tasks.Count();
+    int wykonano = (int)Math.Round(temp*100f);
 }
 <div class=" p-5" style="border-radius:5vh;">
     <partial name="_Background" />
@@ -22,6 +24,9 @@
                     <a asp-action="Delete" asp-route-id="@Model?.TaskList.TaskListId" class="btn btn-outline-danger">Usuń</a>
                 </div>
                 <div class="col-6 col-md-4 text-end"><a href="@Url.Action("Create", "Tasks", new { taskListId = Model.TaskList.TaskListId })" class="btn btn-outline-dark">Dodaj zadanie</a></div>
+            </div><br />
+            <div class="progress" role="progressbar" aria-label="Success example" aria-valuemin="0" aria-valuemax="100" style="height:12px;background-color:white; ">
+                <div class="progress-bar bg-success" style="width: @wykonano%; background-color:black !important;font-size:12px;">@wykonano%</div>
             </div>
             <hr />
             <table class="table">

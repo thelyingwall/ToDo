@@ -72,5 +72,5 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.TaskId" class="btn btn-outline-dark">Edycja</a>
-    <a href="javascript:history.back()" class="btn btn-outline-dark">Powrót</a>
+    <a href="@Url.Action("Details", "TaskLists", new { id = Model.TaskListId })" class="btn btn-outline-dark">Powrót</a>
 </div>
