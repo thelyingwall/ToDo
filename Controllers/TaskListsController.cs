@@ -82,7 +82,7 @@ namespace ToDo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TaskListId,Title")] TaskList taskList)
+        public async Task<IActionResult> Create([Bind("TaskListId,Title,Description")] TaskList taskList)
         {
             if (ModelState.IsValid)
             {
@@ -115,7 +115,7 @@ namespace ToDo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TaskListId,Title")] TaskList taskList)
+        public async Task<IActionResult> Edit(int id, [Bind("TaskListId,Title,Description")] TaskList taskList)
         {
             if (id != taskList.TaskListId)
             {
@@ -128,6 +128,7 @@ namespace ToDo.Controllers
                 {
                     var existingTaskList = await _context.TaskList.FindAsync(taskList.TaskListId);
                     existingTaskList.Title = taskList.Title;
+                    existingTaskList.Description = taskList.Description;
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -141,7 +142,7 @@ namespace ToDo.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "TaskLists", new { id = taskList.TaskListId });
             }
             return View(taskList);
         }
