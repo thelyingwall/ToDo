@@ -52,7 +52,16 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.IsDone)
+                                <a href="@Url.Action("Details", "Tasks", new { id =item.TaskId })">
+                                @if (item.IsDone)
+                                {
+                                    <i style="color:black;" class="bi bi-check-square-fill"></i>
+                                }
+                                else
+                                {
+                                    <i style="color:black;" class="bi bi-check-square"></i>
+                                }
+                                </a>
                             </td>
                             <td class="@(item.IsDone==true ? "strikethrough" : "")">
                                 <a href="@Url.Action("Details", "Tasks", new { id =item.TaskId })" style="text-decoration:none;color:black;">@Html.DisplayFor(modelItem => item.Title)</a>

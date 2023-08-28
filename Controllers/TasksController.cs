@@ -209,5 +209,24 @@ namespace ToDo.Controllers
         {
             return (_context.Task?.Any(e => e.TaskId == id)).GetValueOrDefault();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Check(int id)
+        {
+            if (!_context.Task.Any(x => x.TaskId == id))
+            {
+                return NotFound();
+            }
+            var task = await _context.Task.FindAsync(id);
+            if (task != null)
+            {
+                task.IsDone = !task.IsDone;
+                _context.Update(task);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", "TaskLists", new { id = task.TaskListId });
+        }
     }
 }
