@@ -1,7 +1,8 @@
-﻿@model IEnumerable<ToDo.Models.TaskList>
+﻿@model ToDo.ViewModels.ListViewModel
 
 @{
     ViewData["Title"] = "Listy zadań";
+   
 }
 
 <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -13,7 +14,7 @@
 <br />
 <div class="container overflow-hidden">
     <div class="row row-cols-xs-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3">
-        @foreach (var item in Model)
+        @foreach (var item in Model.TaskLists)
         {
             <div class="">
                 <div class="card" style="height:200px;">
@@ -31,12 +32,15 @@
                             <a asp-action="Details" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Szczegóły</a>
                             <a asp-action="Edit" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Edycja</a>
                         </p>
-                        
+                        @{
+                            float temp = (float)@item.Tasks.Count(x => x.IsDone == true) / (float)@item.Tasks.Count();
+                            int wykonano = ((float)@item.Tasks.Count(x => x.IsDone == true) == 0 && (float)@item.Tasks.Count() == 0) ? 0 : (int)Math.Round(temp * 100f);
+                        }
                         <div class="progress" role="progressbar" aria-label="Success example" aria-valuemin="0" aria-valuemax="100" style="height:10px; ">
-                            <div class="progress-bar bg-success" style="width: 25%; background-color:black !important;"></div>
+                            <div class="progress-bar bg-success" style="width: @wykonano%; background-color:black !important;"></div>
                         </div>
 
-                        <p class="card-text"><small class="text-body-secondary">Ukończono: 25%</small></p>
+                        <p class="card-text"><small class="text-body-secondary">Ukończono: @wykonano%</small></p>
                     </div>
                 </div>
             </div>

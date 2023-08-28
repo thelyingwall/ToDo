@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Runtime.CompilerServices;
 using ToDo.Models;
+using ToDo.Models.Validation;
 
 namespace ToDo.ViewModels
 {
@@ -12,7 +13,8 @@ namespace ToDo.ViewModels
         public int? PriorityId { get; set; }
         public int? CategoryId { get; set; }
         public int? TaskListId { get; set; }
-
+        [DeadlineAfterCreateDateAttribute(ErrorMessage = "Wybierz przyszłą datę.")]
+        public DateTime Deadline { get; set; }= DateTime.Today.AddDays(1);
 
         public override string? ToString()
         {

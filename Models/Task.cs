@@ -4,7 +4,7 @@
     {
         public int TaskId { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public bool IsDone { get; set; } = false;
         public DateTime CreateDate { get; set; }
         public DateTime Deadline { get; set; }

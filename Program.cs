@@ -53,7 +53,7 @@ namespace ToDo
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=TaskLists}/{action=Index}/{id?}");
             app.MapRazorPages();
 
             using(var scope = app.Services.CreateScope())

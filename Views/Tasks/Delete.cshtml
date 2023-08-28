@@ -27,7 +27,7 @@
             Zrobione
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsDone)
+            <i class="@(Model.IsDone==true ? "bi bi-check-square-fill" : "bi bi-square")"></i>
         </dd>
         <dt class = "col-sm-2">
             Data utworzenia

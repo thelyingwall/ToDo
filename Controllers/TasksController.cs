@@ -74,16 +74,17 @@ namespace ToDo.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TaskViewModel taskViewModel)
-        {
+        { 
             if (ModelState.IsValid)
             {
+
                 Models.Task newtask = new Models.Task
                 {
                     Title = taskViewModel.Task.Title,
                     Description = taskViewModel.Task.Description,
                     IsDone = false,
                     CreateDate = DateTime.Now,
-                    Deadline = taskViewModel.Task.Deadline,
+                    Deadline = taskViewModel.Deadline,
                     TaskList = _context.TaskList.Single(x => x.TaskListId == taskViewModel.TaskListId),
                     Category = _context.Category.Single(x => x.CategoryId == taskViewModel.CategoryId),
                     Priority = _context.Priority.Single(x => x.PriorityId == taskViewModel.PriorityId)
@@ -95,6 +96,8 @@ namespace ToDo.Controllers
 
                 return RedirectToAction("Details", "TaskLists", new { id = taskViewModel.TaskListId });
             }
+            taskViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
+            taskViewModel.Priorities = _context.Priority.OrderBy(x => x.PriorityName).Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
             return View(taskViewModel);
         }
 
@@ -116,6 +119,8 @@ namespace ToDo.Controllers
             task.Category = _context.Category.Single(x => x.CategoryId == task.CategoryId);
             task.Priority = _context.Priority.Single(x => x.PriorityId == task.PriorityId);
             taskViewModel.Task = task;
+            taskViewModel.TaskListId = task.TaskListId;
+            taskViewModel.Deadline=task.Deadline;
             taskViewModel.PriorityId = task.PriorityId;
             taskViewModel.CategoryId = task.CategoryId;
             taskViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
@@ -147,7 +152,7 @@ namespace ToDo.Controllers
                     existingTask.Title = taskViewModel.Task.Title;
                     existingTask.Description = taskViewModel.Task.Description;
                     existingTask.IsDone = taskViewModel.Task.IsDone;
-                    existingTask.Deadline = taskViewModel.Task.Deadline;
+                    existingTask.Deadline = taskViewModel.Deadline;
                     _context.Update(existingTask);
                     await _context.SaveChangesAsync();
                 }
@@ -164,7 +169,8 @@ namespace ToDo.Controllers
                 }
                 return RedirectToAction("Details", "Tasks", new { id });
             }
-            
+            taskViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
+            taskViewModel.Priorities = _context.Priority.OrderBy(x => x.PriorityName).Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
             return View(taskViewModel);
         }
 

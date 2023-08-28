@@ -25,9 +25,22 @@ namespace ToDo.Controllers
         // GET: TaskLists
         public async Task<IActionResult> Index()
         {
-              return _context.TaskList != null ? 
-                          View(await _context.TaskList.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.TaskList'  is null.");
+            if (_context.TaskList != null)
+            {
+                ListViewModel listViewModel = new ListViewModel();
+                listViewModel.TaskLists = await _context.TaskList.ToListAsync();
+                foreach (var item in listViewModel.TaskLists)
+                {
+                    item.Tasks = _context.Task.Where(x => x.TaskListId == item.TaskListId).ToList();
+                    Console.WriteLine(item.Tasks.Count());
+                }
+                return View(listViewModel);
+            }
+            else
+            {
+                return Problem("Entity set 'ApplicationDbContext.TaskList'  is null.");
+            }
+            
         }
 
         // GET: TaskLists/Details/5
@@ -53,7 +66,7 @@ namespace ToDo.Controllers
             taskListViewModel.Tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
             foreach (var item in taskListViewModel.Tasks)
             {
-                item.Priority= _context.Priority.Single(x => x.PriorityId == item.PriorityId);
+                item.Priority = _context.Priority.Single(x => x.PriorityId == item.PriorityId);
             }
             return View(taskListViewModel);
         }
@@ -165,14 +178,14 @@ namespace ToDo.Controllers
             {
                 _context.TaskList.Remove(taskList);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TaskListExists(int id)
         {
-          return (_context.TaskList?.Any(e => e.TaskListId == id)).GetValueOrDefault();
+            return (_context.TaskList?.Any(e => e.TaskListId == id)).GetValueOrDefault();
         }
 
     }

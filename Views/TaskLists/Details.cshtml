@@ -28,7 +28,7 @@
             <div class="progress" role="progressbar" aria-label="Success example" aria-valuemin="0" aria-valuemax="100" style="height:12px;background-color:white; border-radius:50px;">
                 <div class="progress-bar bg-success" style="width: @wykonano%; background-color:black !important;font-size:12px;">@wykonano%</div>
             </div>
-            <hr />
+            <br />
             <table class="table">
                 <thead>
                     <tr>
@@ -66,7 +66,7 @@
                             <td class="@(item.IsDone==true ? "strikethrough" : "")">
                                 <a href="@Url.Action("Details", "Tasks", new { id =item.TaskId })" style="text-decoration:none;color:black;">@Html.DisplayFor(modelItem => item.Title)</a>
                             </td>
-                            <td>
+                            <td class="@(item.IsDone==true ? "strikethrough" : "")">
                                 @Html.DisplayFor(modelItem => item.Priority.PriorityName)
                             </td>
                             <td class="@(item.IsDone==true ? "strikethrough" : "")">
