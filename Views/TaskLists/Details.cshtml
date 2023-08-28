@@ -33,7 +33,7 @@
                 <thead>
                     <tr>
                         <th>
-                            Zrobione
+
                         </th>
                         <th>
                             Tytuł
@@ -51,6 +51,7 @@
                     @foreach (var item in Model.Tasks)
                     {
                         <tr>
+
                             <td>
                                 @using (Html.BeginForm("Check", "Tasks", new { id = item.TaskId }, FormMethod.Post))
                                 {
@@ -77,7 +78,7 @@
                                 @*<a href="@Url.Action("Details", "Tasks", new { id =item.TaskId })"><i class="bi bi-list" style="color: black;"></i></a>*@
                                 <a href="@Url.Action("Delete", "Tasks", new { id =item.TaskId })"> <i style="color:black;" class="bi bi-trash"></i></a>
                             </td>
-                        </tr>
+                       </tr>
                     }
                 </tbody>
             </table>

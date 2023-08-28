@@ -51,6 +51,10 @@ namespace ToDo.Controllers
             }
             taskListViewModel.TaskList = taskList;
             taskListViewModel.Tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
+            foreach (var item in taskListViewModel.Tasks)
+            {
+                item.Priority= _context.Priority.Single(x => x.PriorityId == item.PriorityId);
+            }
             return View(taskListViewModel);
         }
 

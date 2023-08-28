@@ -6,5 +6,6 @@ namespace ToDo.ViewModels
     {
         public ToDo.Models.TaskList? TaskList { get; set; }
         public List<Models.Task>? Tasks { get; set; }
+
     }
 }
