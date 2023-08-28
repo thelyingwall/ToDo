@@ -52,16 +52,15 @@
                     {
                         <tr>
                             <td>
-                                <a href="@Url.Action("Details", "Tasks", new { id =item.TaskId })">
-                                @if (item.IsDone)
+                                @using (Html.BeginForm("Check", "Tasks", new { id = item.TaskId }, FormMethod.Post))
                                 {
-                                    <i style="color:black;" class="bi bi-check-square-fill"></i>
+                                    @Html.AntiForgeryToken()
+
+                                    <button type="submit" style="border: none; background: none; padding: 0; margin: 0; font: inherit; color: inherit; cursor: pointer;">
+                                        <i class="@(item.IsDone==true ? "bi bi-check-square-fill" : "bi bi-square")"></i>
+                                    </button>
                                 }
-                                else
-                                {
-                                    <i style="color:black;" class="bi bi-check-square"></i>
-                                }
-                                </a>
+
                             </td>
                             <td class="@(item.IsDone==true ? "strikethrough" : "")">
                                 <a href="@Url.Action("Details", "Tasks", new { id =item.TaskId })" style="text-decoration:none;color:black;">@Html.DisplayFor(modelItem => item.Title)</a>

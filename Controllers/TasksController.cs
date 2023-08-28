@@ -62,8 +62,8 @@ namespace ToDo.Controllers
             }
 
             TaskViewModel taskViewModel = new TaskViewModel();
-            taskViewModel.Categories = _context.Category.Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
-            taskViewModel.Priorities = _context.Priority.Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
+            taskViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
+            taskViewModel.Priorities = _context.Priority.OrderBy(x => x.PriorityName).Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
             taskViewModel.TaskListId = taskListId;
             return View(taskViewModel);
         }
@@ -118,8 +118,8 @@ namespace ToDo.Controllers
             taskViewModel.Task = task;
             taskViewModel.PriorityId = task.PriorityId;
             taskViewModel.CategoryId = task.CategoryId;
-            taskViewModel.Categories = _context.Category.Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
-            taskViewModel.Priorities = _context.Priority.Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
+            taskViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
+            taskViewModel.Priorities = _context.Priority.OrderBy(x => x.PriorityName).Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
             Console.WriteLine(taskViewModel.Task.ToString());
             return View(taskViewModel);
         }
@@ -210,7 +210,7 @@ namespace ToDo.Controllers
             return (_context.Task?.Any(e => e.TaskId == id)).GetValueOrDefault();
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Check")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Check(int id)
         {
