@@ -18,10 +18,10 @@
         {
             <div class="">
                 <div class="card" style="height:200px;">
-                    <div class="card-body">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="card-body text-break">
+                        <div style="display: flex; justify-content: space-between; align-items: center;" class="text-break">
                             <a asp-action="Details" asp-route-id="@item.TaskListId" style="text-decoration:none;color:black;">
-                                <h5 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h5>
+                                <h5 class="card-title text-break"> @Html.DisplayFor(modelItem => item.Title)</h5>
                             </a>
                             <a asp-action="Delete" asp-route-id="@item.TaskListId">
                                 <i style="text-decoration:none;color:black;" class="bi bi-x-lg"></i>

@@ -72,6 +72,13 @@
                             </td>
                             <td class="@(item.IsDone==true ? "strikethrough" : "")">
                                 @Html.DisplayFor(modelItem => item.Deadline)
+                                @{
+                                    if (item.IsDone != true && item.Deadline <= DateTime.Today.AddDays(1))
+                                    {
+                                        <span><i class="bi bi-exclamation-lg text-danger"></i></span>
+                                    }
+                                }
+
                             </td>
 
                             <td>
@@ -79,10 +86,12 @@
                                 @*<a href="@Url.Action("Details", "Tasks", new { id =item.TaskId })"><i class="bi bi-list" style="color: black;"></i></a>*@
                                 <a href="@Url.Action("Delete", "Tasks", new { id =item.TaskId })"> <i style="color:black;" class="bi bi-trash"></i></a>
                             </td>
-                       </tr>
+                        </tr>
                     }
                 </tbody>
             </table>
+            <br />
+            <p class="text-center"><b>Łącznie zadań: @Model.Tasks.Count()</b></p>
         </div>
     </div>
 </div>
