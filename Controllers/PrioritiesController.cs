@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ToDo.Data;
 using ToDo.Models;
+using ToDo.ViewModels;
 
 namespace ToDo.Controllers
 {
@@ -20,11 +22,27 @@ namespace ToDo.Controllers
         }
 
         // GET: Priorities
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? sortOrder)
         {
-              return _context.Priority != null ? 
-                          View(await _context.Priority.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Priority'  is null.");
+            if (_context.Priority != null)
+            {
+                ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name_desc" : "";
+                List<Priority> priorityList=await _context.Priority.ToListAsync();
+                switch (sortOrder)
+                {
+                    case "Name_desc":
+                        priorityList = priorityList.OrderByDescending(s => s.PriorityName).ToList();
+                        break;
+                    default:
+                        priorityList = priorityList.OrderBy(s => s.PriorityName).ToList();
+                        break;
+                }
+                return View(priorityList);
+            }
+            else
+            {
+                return Problem("Entity set 'ApplicationDbContext.Priority'  is null.");
+            }
         }
 
         // GET: Priorities/Details/5
@@ -150,14 +168,14 @@ namespace ToDo.Controllers
             {
                 _context.Priority.Remove(priority);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PriorityExists(int id)
         {
-          return (_context.Priority?.Any(e => e.PriorityId == id)).GetValueOrDefault();
+            return (_context.Priority?.Any(e => e.PriorityId == id)).GetValueOrDefault();
         }
     }
 }

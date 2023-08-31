@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Listy zadań";
-   
+
 }
 
 <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -12,6 +12,11 @@
     </p>
 </div>
 <br />
+<p>
+    @Html.ActionLink("Nazwa", "Index", new { sortOrder = ViewBag.TitleSortParm })
+    @Html.ActionLink("Data utworzenia", "Index", new { sortOrder = ViewBag.CreateDateSortParm })
+    @Html.ActionLink("Poziom ukończenia", "Index", new { sortOrder = ViewBag.DoneSortParm })
+</p>
 <div class="container overflow-hidden">
     <div class="row row-cols-xs-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3">
         @foreach (var item in Model.TaskLists)

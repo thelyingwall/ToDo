@@ -34,16 +34,15 @@
                 <thead>
                     <tr>
                         <th>
-
                         </th>
                         <th>
-                            Tytuł
+                            @Html.ActionLink("Tytuł", "Details", new { sortOrder = ViewBag.TitleSortParm })
                         </th>
                         <th>
-                            Priorytet
+                            @Html.ActionLink("Priorytet", "Details", new { sortOrder = ViewBag.PrioritySortParm })
                         </th>
                         <th>
-                            Termin ukończenia
+                            @Html.ActionLink("Termin ukończenia", "Details", new { sortOrder = ViewBag.DeadlineSortParm })
                         </th>
                         <th></th>
                     </tr>

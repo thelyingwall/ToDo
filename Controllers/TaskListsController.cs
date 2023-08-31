@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ToDo.Data;
 using ToDo.Models;
@@ -23,16 +24,39 @@ namespace ToDo.Controllers
         }
 
         // GET: TaskLists
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? sortOrder)
         {
             if (_context.TaskList != null)
             {
                 ListViewModel listViewModel = new ListViewModel();
+                ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "Title_desc" : "";
+                ViewBag.CreateDateSortParm = sortOrder == "CreateDate" ? "CreateDate_desc" : "CreateDate";
+                ViewBag.DoneSortParm = sortOrder == "Done" ? "Done_desc" : "Done";
                 listViewModel.TaskLists = await _context.TaskList.ToListAsync();
                 foreach (var item in listViewModel.TaskLists)
                 {
                     item.Tasks = _context.Task.Where(x => x.TaskListId == item.TaskListId).ToList();
-                    Console.WriteLine(item.Tasks.Count());
+                }
+                switch (sortOrder)
+                {
+                    case "Title_desc":
+                        listViewModel.TaskLists = listViewModel.TaskLists.OrderByDescending(s => s.Title).ToList();
+                        break;
+                    case "CreateDate":
+                        listViewModel.TaskLists = listViewModel.TaskLists.OrderBy(s => s.CreateDate).ToList();
+                        break;
+                    case "CreateDate_desc":
+                        listViewModel.TaskLists = listViewModel.TaskLists.OrderByDescending(s => s.CreateDate).ToList();
+                        break;
+                    case "Done":
+                        listViewModel.TaskLists = listViewModel.TaskLists.OrderBy(s => s.Tasks.Count(x => x.IsDone == true)).ToList();
+                        break;
+                    case "Done_desc":
+                        listViewModel.TaskLists = listViewModel.TaskLists.OrderByDescending(s => s.Tasks.Count(x => x.IsDone == true)).ToList();
+                        break;
+                    default:
+                        listViewModel.TaskLists = listViewModel.TaskLists.OrderBy(s => s.Title).ToList();
+                        break;
                 }
                 return View(listViewModel);
             }
@@ -40,11 +64,11 @@ namespace ToDo.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.TaskList'  is null.");
             }
-            
+
         }
 
         // GET: TaskLists/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string? sortOrder)
         {
             if (id == null || _context.TaskList == null)
             {
@@ -62,11 +86,38 @@ namespace ToDo.Controllers
             {
                 Console.WriteLine(item.Title.ToString());
             }
+            ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "Title_desc" : "";
+            ViewBag.DeadlineSortParm = sortOrder == "Deadline" ? "Deadline_desc" : "Deadline";
+            ViewBag.PrioritySortParm = sortOrder == "Priority" ? "Priority_desc" : "Priority";
+
             taskListViewModel.TaskList = taskList;
             taskListViewModel.Tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
+
             foreach (var item in taskListViewModel.Tasks)
             {
                 item.Priority = _context.Priority.Single(x => x.PriorityId == item.PriorityId);
+            }
+
+            switch (sortOrder)
+            {
+                case "Title_desc":
+                    taskListViewModel.Tasks = taskListViewModel.Tasks.OrderByDescending(s => s.Title).ToList();
+                    break;
+                case "Deadline":
+                    taskListViewModel.Tasks = taskListViewModel.Tasks.OrderBy(s => s.Deadline).ToList();
+                    break;
+                case "Deadline_desc":
+                    taskListViewModel.Tasks = taskListViewModel.Tasks.OrderByDescending(s => s.Deadline).ToList();
+                    break;
+                case "Priority":
+                    taskListViewModel.Tasks = taskListViewModel.Tasks.OrderBy(s => s.Priority.PriorityName).ToList();
+                    break;
+                case "Priority_desc":
+                    taskListViewModel.Tasks = taskListViewModel.Tasks.OrderByDescending(s => s.Priority.PriorityName).ToList();
+                    break;
+                default:
+                    taskListViewModel.Tasks = taskListViewModel.Tasks.OrderBy(s => s.Title).ToList();
+                    break;
             }
             return View(taskListViewModel);
         }

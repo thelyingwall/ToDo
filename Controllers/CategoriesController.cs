@@ -20,11 +20,27 @@ namespace ToDo.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? sortOrder)
         {
-              return _context.Category != null ? 
-                          View(await _context.Category.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Category'  is null.");
+            if (_context.Category != null)
+            {
+                ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name_desc" : "";
+                List<Category> categoryList = await _context.Category.ToListAsync();
+                switch (sortOrder)
+                {
+                    case "Name_desc":
+                        categoryList = categoryList.OrderByDescending(s => s.CategoryName).ToList();
+                        break;
+                    default:
+                        categoryList = categoryList.OrderBy(s => s.CategoryName).ToList();
+                        break;
+                }
+                return View(categoryList);
+            }
+            else
+            {
+                return Problem("Entity set 'ApplicationDbContext.Priority'  is null.");
+            }
         }
 
         // GET: Categories/Details/5
