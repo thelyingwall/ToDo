@@ -26,8 +26,11 @@ a,a:hover{
     color: black;
     text-decoration: none;
 }
-hr{
-    opacity:100%;
+.sortowanie a:hover {
+    text-decoration: underline;
+}
+hr {
+    opacity: 100%;
 }
 .card:hover {
     background: linear-gradient(48deg, #f2a017, #ffdc4f, #f7683e, #ffc100, #f3bd12, #fb7123, #df3d0d);

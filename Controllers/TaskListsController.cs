@@ -49,10 +49,10 @@ namespace ToDo.Controllers
                         listViewModel.TaskLists = listViewModel.TaskLists.OrderByDescending(s => s.CreateDate).ToList();
                         break;
                     case "Done":
-                        listViewModel.TaskLists = listViewModel.TaskLists.OrderBy(s => s.Tasks.Count(x => x.IsDone == true)).ToList();
+                        listViewModel.TaskLists = listViewModel.TaskLists.OrderBy(s => ((float)s.Tasks.Count(x => x.IsDone == true) == 0 && (float)s.Tasks.Count() == 0) ? 0 : (int)Math.Round((float)s.Tasks.Count(x => x.IsDone == true) / (float)s.Tasks.Count() * 100f)).ToList();
                         break;
                     case "Done_desc":
-                        listViewModel.TaskLists = listViewModel.TaskLists.OrderByDescending(s => s.Tasks.Count(x => x.IsDone == true)).ToList();
+                        listViewModel.TaskLists = listViewModel.TaskLists.OrderByDescending(s => ((float)s.Tasks.Count(x => x.IsDone == true) == 0 && (float)s.Tasks.Count() == 0) ? 0 : (int)Math.Round((float)s.Tasks.Count(x => x.IsDone == true) / (float)s.Tasks.Count() * 100f)).ToList();
                         break;
                     default:
                         listViewModel.TaskLists = listViewModel.TaskLists.OrderBy(s => s.Title).ToList();
