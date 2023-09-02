@@ -6,10 +6,17 @@
 
 <div style="display: flex; justify-content: space-between; align-items: center;">
     <h1>Kategorie</h1>
-    <p>
+    <div>
         <a asp-action="Create" class="btn btn-outline-dark">Nowa kategoria</a>
-    </p>
-</div>
+    </div>
+</div><br />
+@using (Html.BeginForm())
+    {
+        <div class="text-end">
+            Szukaj kategorii: @Html.TextBox("SearchString")
+            <input type="submit" class="btn btn-dark" value="Szukaj" />
+        </div>
+    }
 <table class="table">
     <thead>
         <tr>

@@ -2,8 +2,7 @@
 
 @{
     ViewData["Title"] = "Szczegóły";
-    float temp = (float)Model.Tasks.Count(x => x.IsDone == true) / (float)Model.Tasks.Count();
-    int wykonano = ((float)Model.Tasks.Count(x => x.IsDone == true) == 0 && (float)Model.Tasks.Count() == 0) ? 0 : (int)Math.Round(temp * 100f);
+    
 }
 <div class=" p-5" style="border-radius:5vh;">
     <partial name="_Background" />
@@ -27,9 +26,16 @@
                 <div class="col-6 col-md-4 text-end"><a href="@Url.Action("Create", "Tasks", new { taskListId = Model.TaskList.TaskListId })" class="btn btn-outline-dark">Dodaj zadanie</a></div>
             </div><br />
             <div class="progress" role="progressbar" aria-label="Success example" aria-valuemin="0" aria-valuemax="100" style="height:12px;background-color:white; border-radius:50px;">
-                <div class="progress-bar bg-success" style="width: @wykonano%; background-color:black !important;font-size:12px;">@wykonano%</div>
+                <div class="progress-bar bg-success" style="width: @Model?.progress%; background-color:black !important;font-size:12px;"> @Model?.progress%</div>
             </div>
             <br />
+            @using (Html.BeginForm())
+            {
+                <div class="text-end">
+                    Szukaj zadania: @Html.TextBox("SearchString")
+                    <input type="submit" class="btn btn-dark" value="Szukaj" />
+                </div>
+            }
             <table class="table">
                 <thead>
                     <tr>
@@ -90,7 +96,7 @@
                 </tbody>
             </table>
             <br />
-            <p class="text-center"><b>Łącznie zadań: @Model.Tasks.Count()</b></p>
+            <p class="text-center"><b>Łącznie @Model.Tasks.Count() zadań</b></p>
         </div>
     </div>
 </div>

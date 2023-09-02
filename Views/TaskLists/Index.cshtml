@@ -7,16 +7,31 @@
 
 <div style="display: flex; justify-content: space-between; align-items: center;">
     <h1>Twoje listy zadań</h1>
-    <p>
+    <div>
         <a asp-action="Create" class="btn btn-outline-dark">Nowa lista</a>
-    </p>
+    </div>
 </div>
 <br />
-<p class="sortowanie"> Sortuj według: 
-    @Html.ActionLink("Nazwa", "Index", new { sortOrder = ViewBag.TitleSortParm }) | 
-    @Html.ActionLink("Data utworzenia", "Index", new { sortOrder = ViewBag.CreateDateSortParm }) | 
-    @Html.ActionLink("Poziom ukończenia", "Index", new { sortOrder = ViewBag.DoneSortParm }) 
-</p>
+<div class="row row-cols-xs-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2" style="align-items: center;">
+
+    <div class="sortowanie text-start">
+        Sortuj według:
+        @Html.ActionLink("Nazwa", "Index", new { sortOrder = ViewBag.TitleSortParm }) |
+        @Html.ActionLink("Data utworzenia", "Index", new { sortOrder = ViewBag.CreateDateSortParm }) |
+        @Html.ActionLink("Poziom ukończenia", "Index", new { sortOrder = ViewBag.DoneSortParm })
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="text-end">
+            Szukaj listy: @Html.TextBox("SearchString")
+            <input type="submit" class="btn btn-dark" value="Szukaj" />
+        </div>
+    }
+</div>
+<br />
+
+
+
 <div class="container overflow-hidden">
     <div class="row row-cols-xs-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3">
         @foreach (var item in Model.TaskLists)
@@ -32,7 +47,13 @@
                                 <i style="text-decoration:none;color:black;" class="bi bi-x-lg"></i>
                             </a>
                         </div>
-                        <br><br>
+                        <p style="font-size:12px;">
+                            @{
+                                string data = item.CreateDate.Date.ToShortDateString();
+                            }
+                            @data
+                            </p>
+                        <br>
                         <p class="card-text">
                             <a asp-action="Details" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Szczegóły</a>
                             <a asp-action="Edit" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Edycja</a>

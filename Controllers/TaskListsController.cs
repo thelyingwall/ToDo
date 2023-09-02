@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Build.Framework;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ToDo.Data;
@@ -24,7 +25,7 @@ namespace ToDo.Controllers
         }
 
         // GET: TaskLists
-        public async Task<IActionResult> Index(string? sortOrder)
+        public async Task<IActionResult> Index(string? sortOrder, string? searchString)
         {
             if (_context.TaskList != null)
             {
@@ -33,6 +34,10 @@ namespace ToDo.Controllers
                 ViewBag.CreateDateSortParm = sortOrder == "CreateDate" ? "CreateDate_desc" : "CreateDate";
                 ViewBag.DoneSortParm = sortOrder == "Done" ? "Done_desc" : "Done";
                 listViewModel.TaskLists = await _context.TaskList.ToListAsync();
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    listViewModel.TaskLists = listViewModel.TaskLists.Where(s => s.Title.ToUpper().Contains(searchString.ToUpper())).ToList();
+                }
                 foreach (var item in listViewModel.TaskLists)
                 {
                     item.Tasks = _context.Task.Where(x => x.TaskListId == item.TaskListId).ToList();
@@ -68,7 +73,7 @@ namespace ToDo.Controllers
         }
 
         // GET: TaskLists/Details/5
-        public async Task<IActionResult> Details(int? id, string? sortOrder)
+        public async Task<IActionResult> Details(int? id, string? sortOrder, string? searchString)
         {
             if (id == null || _context.TaskList == null)
             {
@@ -77,22 +82,27 @@ namespace ToDo.Controllers
 
             var taskList = await _context.TaskList
                 .FirstOrDefaultAsync(m => m.TaskListId == id);
+
             if (taskList == null)
             {
                 return NotFound();
             }
             TaskListViewModel taskListViewModel = new TaskListViewModel();
-            foreach (var item in _context.Task.Where(x => x.TaskListId == id))
-            {
-                Console.WriteLine(item.Title.ToString());
-            }
+
             ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "Title_desc" : "";
             ViewBag.DeadlineSortParm = sortOrder == "Deadline" ? "Deadline_desc" : "Deadline";
             ViewBag.PrioritySortParm = sortOrder == "Priority" ? "Priority_desc" : "Priority";
 
             taskListViewModel.TaskList = taskList;
             taskListViewModel.Tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
+            int progress = ((float)taskListViewModel.Tasks.Count(x => x.IsDone == true) == 0 && (float)taskListViewModel.Tasks.Count() == 0) ? 0 : (int)Math.Round((float)taskListViewModel.Tasks.Count(x => x.IsDone == true) / (float)taskListViewModel.Tasks.Count() * 100f);
 
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                taskListViewModel.Tasks = taskListViewModel.Tasks.Where(s => s.Title.ToUpper().Contains(searchString.ToUpper())).ToList();
+                
+            }
+            taskListViewModel.progress = progress;
             foreach (var item in taskListViewModel.Tasks)
             {
                 item.Priority = _context.Priority.Single(x => x.PriorityId == item.PriorityId);

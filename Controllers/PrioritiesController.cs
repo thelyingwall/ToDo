@@ -22,12 +22,16 @@ namespace ToDo.Controllers
         }
 
         // GET: Priorities
-        public async Task<IActionResult> Index(string? sortOrder)
+        public async Task<IActionResult> Index(string? sortOrder,string? searchString)
         {
             if (_context.Priority != null)
             {
                 ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name_desc" : "";
                 List<Priority> priorityList=await _context.Priority.ToListAsync();
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    priorityList = priorityList.Where(s => s.PriorityName.ToUpper().Contains(searchString.ToUpper())).ToList();
+                }
                 switch (sortOrder)
                 {
                     case "Name_desc":
