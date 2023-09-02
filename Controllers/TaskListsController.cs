@@ -42,7 +42,7 @@ namespace ToDo.Controllers
                 foreach (var item in listViewModel.TaskLists)
                 {
                     item.Tasks = _context.Task.Where(x => x.TaskListId == item.TaskListId).ToList();
-                    item.Category= _context.Category.Single(x => x.CategoryId == item.CategoryId);
+                    item.Category = _context.Category.Single(x => x.CategoryId == item.CategoryId);
                 }
                 switch (sortOrder)
                 {
@@ -75,8 +75,10 @@ namespace ToDo.Controllers
         }
 
         // GET: TaskLists/Details/5
-        public async Task<IActionResult> Details(int? id, string? sortOrder, string? searchString)
+        public async Task<IActionResult> Details(int? id, string? sortOrder, string? searchString, int? page=0)
         {
+            //page -= 1;
+            
             if (id == null || _context.TaskList == null)
             {
                 return NotFound();
@@ -96,17 +98,23 @@ namespace ToDo.Controllers
             ViewBag.PrioritySortParm = sortOrder == "Priority" ? "Priority_desc" : "Priority";
 
             taskListViewModel.TaskList = taskList;
-            taskListViewModel.Tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
+            int pageSize = 10;
+            var tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
+            int totalItems = tasks.Count();
+            int totalPages = totalItems / pageSize;
+            
+            
+            //taskListViewModel.Tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
             taskListViewModel.TaskList.Category = _context.Category.Single(x => x.CategoryId == taskList.CategoryId);
-            int progress = ((float)taskListViewModel.Tasks.Count(x => x.IsDone == true) == 0 && (float)taskListViewModel.Tasks.Count() == 0) ? 0 : (int)Math.Round((float)taskListViewModel.Tasks.Count(x => x.IsDone == true) / (float)taskListViewModel.Tasks.Count() * 100f);
+            int progress = ((float)tasks.Count(x => x.IsDone == true) == 0 && (float)tasks.Count() == 0) ? 0 : (int)Math.Round((float)tasks.Count(x => x.IsDone == true) / (float)tasks.Count() * 100f);
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                taskListViewModel.Tasks = taskListViewModel.Tasks.Where(s => s.Title.ToUpper().Contains(searchString.ToUpper())).ToList();
+                tasks = tasks.Where(s => s.Title.ToUpper().Contains(searchString.ToUpper())).ToList();
 
             }
             taskListViewModel.progress = progress;
-            foreach (var item in taskListViewModel.Tasks)
+            foreach (var item in tasks)
             {
                 item.Priority = _context.Priority.Single(x => x.PriorityId == item.PriorityId);
             }
@@ -114,24 +122,33 @@ namespace ToDo.Controllers
             switch (sortOrder)
             {
                 case "Title_desc":
-                    taskListViewModel.Tasks = taskListViewModel.Tasks.OrderByDescending(s => s.Title).ToList();
+                    tasks = tasks.OrderByDescending(s => s.Title).ToList();
                     break;
                 case "Deadline":
-                    taskListViewModel.Tasks = taskListViewModel.Tasks.OrderBy(s => s.Deadline).ToList();
+                    tasks = tasks.OrderBy(s => s.Deadline).ToList();
                     break;
                 case "Deadline_desc":
-                    taskListViewModel.Tasks = taskListViewModel.Tasks.OrderByDescending(s => s.Deadline).ToList();
+                    tasks = tasks.OrderByDescending(s => s.Deadline).ToList();
                     break;
                 case "Priority":
-                    taskListViewModel.Tasks = taskListViewModel.Tasks.OrderBy(s => s.Priority.PriorityName).ToList();
+                    tasks = tasks.OrderBy(s => s.Priority.PriorityName).ToList();
                     break;
                 case "Priority_desc":
-                    taskListViewModel.Tasks = taskListViewModel.Tasks.OrderByDescending(s => s.Priority.PriorityName).ToList();
+                    tasks = tasks.OrderByDescending(s => s.Priority.PriorityName).ToList();
                     break;
                 default:
-                    taskListViewModel.Tasks = taskListViewModel.Tasks.OrderBy(s => s.Title).ToList();
+                    tasks = tasks.OrderBy(s => s.Title).ToList();
                     break;
             }
+            var pagedTasks = tasks.Skip((int)((int)pageSize*page)).Take(pageSize).ToList();
+            taskListViewModel.Tasks = new PaginationViewModel<Models.Task>
+            {
+                PageSize = pageSize,
+                TotalItems = totalItems,
+                TotalPages = totalPages,
+                Items = pagedTasks,
+                CurrentPage = (int)page
+            };
             return View(taskListViewModel);
         }
 

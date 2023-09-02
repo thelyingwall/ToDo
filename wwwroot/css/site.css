@@ -22,16 +22,20 @@ body {
 .table {
     border-color: #8d8d8d;
 }
-a,a:hover{
+
+a, a:hover {
     color: black;
     text-decoration: none;
 }
+
 .sortowanie a:hover {
     text-decoration: underline;
 }
+
 hr {
     opacity: 100%;
 }
+
 .card:hover {
     background: linear-gradient(48deg, #f2a017, #ffdc4f, #f7683e, #ffc100, #f3bd12, #fb7123, #df3d0d);
     background-size: 1400% 1400%;
@@ -44,6 +48,7 @@ hr {
     text-decoration: line-through;
     text-decoration-thickness: 2px;
 }
+
 .card {
     margin: 5px;
 }
@@ -70,6 +75,37 @@ footer {
     padding-inline: 8%;
     padding-top: 5%;
     padding-bottom: 5%;
+}
+
+.pagination > li > a {
+    background-color: transparent !Important;
+    color: black;
+    border: solid 1px black;
+}
+.pagination > .disabled > a {
+    background-color: transparent !Important;
+    color: grey !Important;
+    border: solid 1px darkgrey !Important;
+}
+
+.pagination > li > a:focus,
+.pagination > li > span:focus,
+.pagination > li > span:hover {
+    color: black;
+    background-color: transparent;
+    border-color: black;
+}
+
+.pagination > .active > a {
+    color: white;
+    background-color: black !Important;
+    border: solid 1px black !Important;
+}
+
+.pagination > li > a:hover, .pagination > .active > a:hover {
+    background-color: black !Important;
+    color: white;
+    border: solid 1px black;
 }
 
 @-webkit-keyframes AnimationName {

@@ -1,5 +1,17 @@
 ﻿@model ToDo.ViewModels.TaskListViewModel
+@inject IHttpContextAccessor context;
+@{
+    string queryString = "";
+    @if ((Context.Request.QueryString).Value.Contains("page"))
+    {
+        queryString = Context.Request.QueryString + "&page=";
+    }
+    else
+    {
+        queryString = Context.Request.QueryString.ToString();
+    }
 
+}
 @{
     ViewData["Title"] = "Szczegóły";
 
@@ -66,7 +78,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.Tasks)
+                    @foreach (var item in Model.Tasks.Items)
                     {
                         <tr>
 
@@ -106,7 +118,42 @@
                 </tbody>
             </table>
             <br />
-            <p class="text-center"><b>Łącznie @Model.Tasks.Count() zadań</b></p>
+            <div class="pagination justify-content-center">
+                <ul class="pagination" style="background-color:transparent;">
+                    <li class="page-item @(Model.Tasks.CurrentPage==0 ? "disabled" : "")">
+                        <a class="page-link" aria-disabled="true" href="@Url.Action("Details", new {
+                                id=Model.TaskList.TaskListId,
+                                page = Model.Tasks.CurrentPage - 1,
+                                searchString = Context.Request.Query["searchString"],
+                                sortOrder = Context.Request.Query["sortOrder"]
+                                })"><i class="bi bi-chevron-left"></i></a>
+                    </li>
+                    @for (var i = 0; i <= Model.Tasks.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.Tasks.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Details", new {
+                                id=Model.TaskList.TaskListId,
+                                page = i,
+                                searchString = Context.Request.Query["searchString"],
+                                sortOrder = Context.Request.Query["sortOrder"]
+                                })">
+                                @{
+                                    int temp = i+1;
+                                } @temp
+                            </a>
+                        </li>
+                    }
+                    <li class="page-item @(Model.Tasks.CurrentPage==Model.Tasks.TotalPages ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Details", new {
+                                id=Model.TaskList.TaskListId,
+                                page = Model.Tasks.CurrentPage + 1,
+                                searchString = Context.Request.Query["searchString"],
+                                sortOrder = Context.Request.Query["sortOrder"]
+                                })"><i class="bi bi-chevron-right"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <p class="text-center"><b>Łącznie @Model.Tasks.TotalItems zadań</b></p>
         </div>
     </div>
 </div>
