@@ -45,7 +45,6 @@ namespace ToDo.Controllers
                 return NotFound();
             }
             task.TaskList = _context.TaskList.Single(x => x.TaskListId == task.TaskListId);
-            task.Category = _context.Category.Single(x => x.CategoryId == task.CategoryId);
             task.Priority = _context.Priority.Single(x => x.PriorityId == task.PriorityId);
             Console.WriteLine(task.ToString());
             return View(task);
@@ -62,7 +61,6 @@ namespace ToDo.Controllers
             }
 
             TaskViewModel taskViewModel = new TaskViewModel();
-            taskViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
             taskViewModel.Priorities = _context.Priority.OrderBy(x => x.PriorityName).Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
             taskViewModel.TaskListId = taskListId;
             return View(taskViewModel);
@@ -86,17 +84,14 @@ namespace ToDo.Controllers
                     CreateDate = DateTime.Now,
                     Deadline = taskViewModel.Deadline,
                     TaskList = _context.TaskList.Single(x => x.TaskListId == taskViewModel.TaskListId),
-                    Category = _context.Category.Single(x => x.CategoryId == taskViewModel.CategoryId),
                     Priority = _context.Priority.Single(x => x.PriorityId == taskViewModel.PriorityId)
 
                 };
-                Console.WriteLine(newtask.ToString());
                 _context.Task.Add(newtask);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction("Details", "TaskLists", new { id = taskViewModel.TaskListId });
             }
-            taskViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
             taskViewModel.Priorities = _context.Priority.OrderBy(x => x.PriorityName).Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
             return View(taskViewModel);
         }
@@ -116,14 +111,11 @@ namespace ToDo.Controllers
             }
             TaskViewModel taskViewModel = new TaskViewModel();
             task.TaskList = _context.TaskList.Single(x => x.TaskListId == task.TaskListId);
-            task.Category = _context.Category.Single(x => x.CategoryId == task.CategoryId);
             task.Priority = _context.Priority.Single(x => x.PriorityId == task.PriorityId);
             taskViewModel.Task = task;
             taskViewModel.TaskListId = task.TaskListId;
             taskViewModel.Deadline=task.Deadline;
             taskViewModel.PriorityId = task.PriorityId;
-            taskViewModel.CategoryId = task.CategoryId;
-            taskViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
             taskViewModel.Priorities = _context.Priority.OrderBy(x => x.PriorityName).Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
             Console.WriteLine(taskViewModel.Task.ToString());
             return View(taskViewModel);
@@ -146,7 +138,6 @@ namespace ToDo.Controllers
                 try
                 {
                     var existingTask = await _context.Task.FindAsync(id);
-                    existingTask.Category = _context.Category.Single(x => x.CategoryId == taskViewModel.CategoryId);
                     existingTask.Priority = _context.Priority.Single(x => x.PriorityId == taskViewModel.PriorityId);
 
                     existingTask.Title = taskViewModel.Task.Title;
@@ -169,7 +160,6 @@ namespace ToDo.Controllers
                 }
                 return RedirectToAction("Details", "Tasks", new { id });
             }
-            taskViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
             taskViewModel.Priorities = _context.Priority.OrderBy(x => x.PriorityName).Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
             return View(taskViewModel);
         }

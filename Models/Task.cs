@@ -12,13 +12,11 @@
         public virtual TaskList? TaskList { get; set; }
         public int PriorityId { get; set; }
         public virtual Priority? Priority { get; set; }
-        public int CategoryId { get; set; }
-        public virtual Category? Category { get; set; } 
 
         public override string? ToString()
         {
             return $"=============================================================================================\n" +
-                $"{Title} {Description} {IsDone} {CreateDate} {Deadline} {TaskList.Title} {Priority.PriorityName} {Category.CategoryName}\n" +
+                $"{Title} {Description} {IsDone} {CreateDate} {Deadline} {TaskList.Title} {Priority.PriorityName}\n" +
                 $"=============================================================================================";
         }
     }

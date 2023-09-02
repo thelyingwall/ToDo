@@ -4,6 +4,6 @@
     {
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
-        public virtual ICollection<Task>? Tasks { get; set; }
+        public virtual ICollection<TaskList>? TaskLists { get; set; }
     }
 }

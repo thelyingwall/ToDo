@@ -48,6 +48,7 @@
                             </a>
                         </div>
                         <p style="font-size:12px;">
+                            @Html.DisplayFor(modelItem => item.Category.CategoryName)
                             @{
                                 string data = item.CreateDate.Date.ToShortDateString();
                             }

@@ -10,5 +10,7 @@ namespace ToDo.Models
         public string? Description { get; set; }
         public DateTime CreateDate { get; set; }
         public virtual ICollection<Task>? Tasks { get; set; }
+        public int CategoryId { get; set; }
+        public virtual Category? Category { get; set; }
     }
 }

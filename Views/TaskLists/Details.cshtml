@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Szczegóły";
-    
+
 }
 <div class=" p-5" style="border-radius:5vh;">
     <partial name="_Background" />
@@ -16,8 +16,20 @@
         </div>
 
         <div>
-            <p>Data utworzenia: @Html.DisplayFor(model => model.TaskList.CreateDate)</p>
-            <p>Opis: @Html.DisplayFor(model => model.TaskList.Description)</p>
+            <p>
+                <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" class="toggle-icon">
+                    Wyświetl szczegóły
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+            </p>
+            <div class="collapse" id="collapseExample">
+                <p>
+                    <b>Data utworzenia:</b> @Html.DisplayFor(model => model.TaskList.CreateDate)<br />
+                    <b>Kategoria listy:</b> @Html.DisplayFor(model => model.TaskList.Category.CategoryName)<br />
+                    @Html.DisplayFor(model => model.TaskList.Description)
+                </p>
+            </div>
+
             <div class="row g-0 row-cols-xs-1 row-cols-xxs-1">
                 <div class="col-sm-6 col-md-8">
                     <a asp-action="Edit" asp-route-id="@Model?.TaskList.TaskListId" class="btn btn-outline-dark">Edytuj</a>
@@ -87,8 +99,6 @@
                             </td>
 
                             <td>
-                                @*<a href="@Url.Action("Edit", "Tasks", new { id =item.TaskId })" class="btn btn-outline-dark">Edycja</a>*@
-                                @*<a href="@Url.Action("Details", "Tasks", new { id =item.TaskId })"><i class="bi bi-list" style="color: black;"></i></a>*@
                                 <a href="@Url.Action("Delete", "Tasks", new { id =item.TaskId })"> <i style="color:black;" class="bi bi-trash"></i></a>
                             </td>
                         </tr>
@@ -100,3 +110,18 @@
         </div>
     </div>
 </div>
+
+<script>
+    var collapseButton = document.querySelector('.toggle-icon');
+    var icon = collapseButton.querySelector('i');
+
+    collapseButton.addEventListener('click', function () {
+        if (icon.classList.contains('bi-chevron-down')) {
+            icon.classList.remove('bi-chevron-down');
+            icon.classList.add('bi-chevron-up');
+        } else {
+            icon.classList.remove('bi-chevron-up');
+            icon.classList.add('bi-chevron-down');
+        }
+    });
+</script>

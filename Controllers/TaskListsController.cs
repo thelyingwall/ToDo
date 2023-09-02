@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -41,6 +42,7 @@ namespace ToDo.Controllers
                 foreach (var item in listViewModel.TaskLists)
                 {
                     item.Tasks = _context.Task.Where(x => x.TaskListId == item.TaskListId).ToList();
+                    item.Category= _context.Category.Single(x => x.CategoryId == item.CategoryId);
                 }
                 switch (sortOrder)
                 {
@@ -95,12 +97,13 @@ namespace ToDo.Controllers
 
             taskListViewModel.TaskList = taskList;
             taskListViewModel.Tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
+            taskListViewModel.TaskList.Category = _context.Category.Single(x => x.CategoryId == taskList.CategoryId);
             int progress = ((float)taskListViewModel.Tasks.Count(x => x.IsDone == true) == 0 && (float)taskListViewModel.Tasks.Count() == 0) ? 0 : (int)Math.Round((float)taskListViewModel.Tasks.Count(x => x.IsDone == true) / (float)taskListViewModel.Tasks.Count() * 100f);
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 taskListViewModel.Tasks = taskListViewModel.Tasks.Where(s => s.Title.ToUpper().Contains(searchString.ToUpper())).ToList();
-                
+
             }
             taskListViewModel.progress = progress;
             foreach (var item in taskListViewModel.Tasks)
@@ -135,7 +138,9 @@ namespace ToDo.Controllers
         // GET: TaskLists/Create
         public IActionResult Create()
         {
-            return View();
+            TaskListViewModel tasklistViewModel = new TaskListViewModel();
+            tasklistViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
+            return View(tasklistViewModel);
         }
 
         // POST: TaskLists/Create
@@ -143,16 +148,23 @@ namespace ToDo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TaskListId,Title,Description")] TaskList taskList)
+        public async Task<IActionResult> Create(TaskListViewModel taskListViewModel)
         {
             if (ModelState.IsValid)
             {
-                taskList.CreateDate = DateTime.Now;
-                _context.Add(taskList);
+                TaskList newtasklist = new TaskList
+                {
+                    Title = taskListViewModel.TaskList.Title,
+                    Description = taskListViewModel.TaskList.Description,
+                    CreateDate = DateTime.Now,
+                    Category = _context.Category.Single(x => x.CategoryId == taskListViewModel.CategoryId)
+                };
+                _context.Add(newtasklist);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(taskList);
+            taskListViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
+            return View(taskListViewModel);
         }
 
         // GET: TaskLists/Edit/5
@@ -168,7 +180,12 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
-            return View(taskList);
+            TaskListViewModel taskListViewModel = new TaskListViewModel();
+            taskList.Category = _context.Category.Single(x => x.CategoryId == taskList.CategoryId);
+            taskListViewModel.TaskList = taskList;
+            taskListViewModel.CategoryId = taskList.CategoryId;
+            taskListViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
+            return View(taskListViewModel);
         }
 
         // POST: TaskLists/Edit/5
@@ -176,9 +193,9 @@ namespace ToDo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TaskListId,Title,Description")] TaskList taskList)
+        public async Task<IActionResult> Edit(int id, TaskListViewModel taskListViewModel)
         {
-            if (id != taskList.TaskListId)
+            if (!_context.TaskList.Any(x => x.TaskListId == id))
             {
                 return NotFound();
             }
@@ -187,14 +204,16 @@ namespace ToDo.Controllers
             {
                 try
                 {
-                    var existingTaskList = await _context.TaskList.FindAsync(taskList.TaskListId);
-                    existingTaskList.Title = taskList.Title;
-                    existingTaskList.Description = taskList.Description;
+                    var existingTaskList = await _context.TaskList.FindAsync(taskListViewModel.TaskList.TaskListId);
+                    existingTaskList.Title = taskListViewModel.TaskList.Title;
+                    existingTaskList.Description = taskListViewModel.TaskList.Description;
+                    existingTaskList.Category = _context.Category.Single(x => x.CategoryId == taskListViewModel.CategoryId);
+                    _context.Update(existingTaskList);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TaskListExists(taskList.TaskListId))
+                    if (!TaskListExists(taskListViewModel.TaskList.TaskListId))
                     {
                         return NotFound();
                     }
@@ -203,9 +222,10 @@ namespace ToDo.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Details", "TaskLists", new { id = taskList.TaskListId });
+                return RedirectToAction("Details", "TaskLists", new { id });
             }
-            return View(taskList);
+            taskListViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
+            return View(taskListViewModel);
         }
 
         //GET: TaskLists/Delete/5
