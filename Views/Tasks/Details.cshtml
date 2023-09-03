@@ -52,6 +52,13 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Priority.PriorityName)
         </dd>
+        @if (Model.ImagePath != null)
+        {
+            <dt class="col-sm-2">
+                Obrazek
+            </dt>
+            <img src="@Url.Content(Model.ImagePath)" style="100%">
+        }
     </dl>
 </div>
 <div>

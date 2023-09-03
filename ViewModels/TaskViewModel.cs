@@ -13,6 +13,7 @@ namespace ToDo.ViewModels
         public int? TaskListId { get; set; }
         [DeadlineAfterCreateDateAttribute(ErrorMessage = "Wybierz przyszłą datę.")]
         public DateTime Deadline { get; set; } = DateTime.Today.AddDays(1);
+        public string? PreviousImagePath { get; set; }
 
         public override string? ToString()
         {

@@ -71,7 +71,7 @@ namespace ToDo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TaskViewModel taskViewModel)
+        public async Task<IActionResult> Create(TaskViewModel taskViewModel, IFormFile? imageFile)
         { 
             if (ModelState.IsValid)
             {
@@ -83,6 +83,7 @@ namespace ToDo.Controllers
                     IsDone = false,
                     CreateDate = DateTime.Now,
                     Deadline = taskViewModel.Deadline,
+                    ImagePath = imageFile != null ? await SaveImage(imageFile) : null,
                     TaskList = _context.TaskList.Single(x => x.TaskListId == taskViewModel.TaskListId),
                     Priority = _context.Priority.Single(x => x.PriorityId == taskViewModel.PriorityId)
 
@@ -113,6 +114,7 @@ namespace ToDo.Controllers
             task.TaskList = _context.TaskList.Single(x => x.TaskListId == task.TaskListId);
             task.Priority = _context.Priority.Single(x => x.PriorityId == task.PriorityId);
             taskViewModel.Task = task;
+            taskViewModel.PreviousImagePath = task.ImagePath;
             taskViewModel.TaskListId = task.TaskListId;
             taskViewModel.Deadline=task.Deadline;
             taskViewModel.PriorityId = task.PriorityId;
@@ -126,7 +128,7 @@ namespace ToDo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, TaskViewModel taskViewModel)
+        public async Task<IActionResult> Edit(int id, TaskViewModel taskViewModel, IFormFile? imageFile)
         {
             if (!_context.Task.Any(x => x.TaskId == id))
             {
@@ -144,6 +146,14 @@ namespace ToDo.Controllers
                     existingTask.Description = taskViewModel.Task.Description;
                     existingTask.IsDone = taskViewModel.Task.IsDone;
                     existingTask.Deadline = taskViewModel.Deadline;
+                    if (imageFile != null)
+                    {
+                        existingTask.ImagePath = await SaveImage(imageFile);
+                    }
+                    else if (!string.IsNullOrEmpty(taskViewModel.PreviousImagePath))
+                    {
+                        existingTask.ImagePath = taskViewModel.PreviousImagePath;
+                    }
                     _context.Update(existingTask);
                     await _context.SaveChangesAsync();
                 }
@@ -223,6 +233,22 @@ namespace ToDo.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction("Details", "TaskLists", new { id = task.TaskListId });
+        }
+
+        private async Task<string> SaveImage(IFormFile imageFile)
+        {
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var imageName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", imageName);
+
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+                return "/images/" + imageName;
+            }
+            return null;
         }
     }
 }

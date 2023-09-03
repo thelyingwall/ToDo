@@ -11,41 +11,47 @@
     <h4>Zadanie</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Tytuł
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Opis
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Zrobione
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             <i class="@(Model.IsDone==true ? "bi bi-check-square-fill" : "bi bi-square")"></i>
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Data utworzenia
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CreateDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Termin ukończenia
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Deadline)
         </dd>
+        @if (Model.ImagePath != null)
+        {
+            <dt class="col-sm-2">
+                Obrazek
+            </dt>
+            <img src="@Url.Content(Model.ImagePath)" class="card-img-top mb-5 mb-md-0">
+        }
     </dl>
-    
     <form asp-action="Delete">
         <input type="hidden" asp-for="TaskId" />
-        <input type="submit" value="Usuń" class="btn btn-danger" /> 
+        <input type="submit" value="Usuń" class="btn btn-danger" />
         <a href="javascript:history.back()" class="btn btn-outline-dark">Powrót</a>
     </form>
 </div>

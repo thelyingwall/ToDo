@@ -33,12 +33,14 @@ namespace ToDo.Controllers
                 ListViewModel listViewModel = new ListViewModel();
                 ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "Title_desc" : "";
                 ViewBag.CreateDateSortParm = sortOrder == "CreateDate" ? "CreateDate_desc" : "CreateDate";
+                ViewBag.CategorySortParm = sortOrder == "Category" ? "Category_desc" : "Category";
                 ViewBag.DoneSortParm = sortOrder == "Done" ? "Done_desc" : "Done";
                 listViewModel.TaskLists = await _context.TaskList.ToListAsync();
                 if (!String.IsNullOrEmpty(searchString))
                 {
                     listViewModel.TaskLists = listViewModel.TaskLists.Where(s => s.Title.ToUpper().Contains(searchString.ToUpper())).ToList();
                 }
+                //listViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
                 foreach (var item in listViewModel.TaskLists)
                 {
                     item.Tasks = _context.Task.Where(x => x.TaskListId == item.TaskListId).ToList();
@@ -48,6 +50,12 @@ namespace ToDo.Controllers
                 {
                     case "Title_desc":
                         listViewModel.TaskLists = listViewModel.TaskLists.OrderByDescending(s => s.Title).ToList();
+                        break;
+                    case "Category":
+                        listViewModel.TaskLists = listViewModel.TaskLists.OrderBy(s => s.Category.CategoryName).ToList();
+                        break;
+                    case "Category_desc":
+                        listViewModel.TaskLists = listViewModel.TaskLists.OrderByDescending(s => s.Category.CategoryName).ToList();
                         break;
                     case "CreateDate":
                         listViewModel.TaskLists = listViewModel.TaskLists.OrderBy(s => s.CreateDate).ToList();
@@ -75,10 +83,8 @@ namespace ToDo.Controllers
         }
 
         // GET: TaskLists/Details/5
-        public async Task<IActionResult> Details(int? id, string? sortOrder, string? searchString, int? page=0)
+        public async Task<IActionResult> Details(int? id, string? sortOrder, string? searchString, int? page = 0)
         {
-            //page -= 1;
-            
             if (id == null || _context.TaskList == null)
             {
                 return NotFound();
@@ -98,13 +104,14 @@ namespace ToDo.Controllers
             ViewBag.PrioritySortParm = sortOrder == "Priority" ? "Priority_desc" : "Priority";
 
             taskListViewModel.TaskList = taskList;
-            int pageSize = 10;
+            int pageSize = 15;
             var tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
             int totalItems = tasks.Count();
             int totalPages = totalItems / pageSize;
-            
-            
+
+
             //taskListViewModel.Tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
+            //taskListViewModel.Priorities = _context.Priority.OrderBy(x => x.PriorityName).Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
             taskListViewModel.TaskList.Category = _context.Category.Single(x => x.CategoryId == taskList.CategoryId);
             int progress = ((float)tasks.Count(x => x.IsDone == true) == 0 && (float)tasks.Count() == 0) ? 0 : (int)Math.Round((float)tasks.Count(x => x.IsDone == true) / (float)tasks.Count() * 100f);
 
@@ -122,25 +129,25 @@ namespace ToDo.Controllers
             switch (sortOrder)
             {
                 case "Title_desc":
-                    tasks = tasks.OrderByDescending(s => s.Title).ToList();
+                    tasks = tasks.OrderByDescending(s => s.Title).OrderBy(s => s.IsDone).ToList();
                     break;
                 case "Deadline":
-                    tasks = tasks.OrderBy(s => s.Deadline).ToList();
+                    tasks = tasks.OrderBy(s => s.Deadline).OrderBy(s => s.IsDone).ToList();
                     break;
                 case "Deadline_desc":
-                    tasks = tasks.OrderByDescending(s => s.Deadline).ToList();
+                    tasks = tasks.OrderByDescending(s => s.Deadline).OrderBy(s => s.IsDone).ToList();
                     break;
                 case "Priority":
-                    tasks = tasks.OrderBy(s => s.Priority.PriorityName).ToList();
+                    tasks = tasks.OrderBy(s => s.Priority.PriorityName).OrderBy(s => s.IsDone).ToList();
                     break;
                 case "Priority_desc":
-                    tasks = tasks.OrderByDescending(s => s.Priority.PriorityName).ToList();
+                    tasks = tasks.OrderByDescending(s => s.Priority.PriorityName).OrderBy(s => s.IsDone).ToList();
                     break;
                 default:
-                    tasks = tasks.OrderBy(s => s.Title).ToList();
+                    tasks = tasks.OrderBy(s => s.Title).OrderBy(s => s.IsDone).ToList();
                     break;
             }
-            var pagedTasks = tasks.Skip((int)((int)pageSize*page)).Take(pageSize).ToList();
+            var pagedTasks = tasks.Skip((int)((int)pageSize * page)).Take(pageSize).ToList();
             taskListViewModel.Tasks = new PaginationViewModel<Models.Task>
             {
                 PageSize = pageSize,

@@ -17,6 +17,7 @@
     <div class="sortowanie text-start">
         Sortuj według:
         @Html.ActionLink("Nazwa", "Index", new { sortOrder = ViewBag.TitleSortParm }) |
+        @Html.ActionLink("Kategoria", "Index", new { sortOrder = ViewBag.CategorySortParm }) |
         @Html.ActionLink("Data utworzenia", "Index", new { sortOrder = ViewBag.CreateDateSortParm }) |
         @Html.ActionLink("Poziom ukończenia", "Index", new { sortOrder = ViewBag.DoneSortParm })
     </div>

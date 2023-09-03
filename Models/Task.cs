@@ -12,6 +12,7 @@
         public virtual TaskList? TaskList { get; set; }
         public int PriorityId { get; set; }
         public virtual Priority? Priority { get; set; }
+        public string? ImagePath { get; set; }
 
         public override string? ToString()
         {
