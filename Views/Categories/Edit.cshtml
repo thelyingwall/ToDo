@@ -4,12 +4,10 @@
     ViewData["Title"] = "Edycja";
 }
 
-<h1>Edycja</h1>
-
-<h4>Kategoria</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<h1 class="text-center">Edycja kategorii</h1>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <hr />
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CategoryId" />
@@ -18,7 +16,7 @@
                 <input asp-for="CategoryName" class="form-control" />
                 <span asp-validation-for="CategoryName" class="text-danger"></span>
             </div><br />
-            <div class="form-group">
+            <div class="form-group text-center">
                 <input type="submit" value="Zapisz" class="btn btn-outline-dark" />
                 <a asp-action="Index" class="btn btn-outline-dark">Powrót</a>
             </div>

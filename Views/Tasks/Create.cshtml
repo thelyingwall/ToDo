@@ -4,11 +4,12 @@
     ViewData["Title"] = "Nowe zadanie";
 }
 
-<h1>Nowe zadanie</h1>
+<h1 class="text-center">Nowe zadanie</h1>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <hr />
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="@Model.TaskListId" />
@@ -38,7 +39,7 @@
             </div>
 
             <br />
-            <div class="form-group">
+            <div class="form-group text-center">
                 <input type="submit" value="Utwórz" class="btn btn-outline-dark" />
                 <a href="@Url.Action("Details", "TaskLists", new { id = Model.TaskListId })" class="btn btn-outline-dark">Powrót</a>
             </div>

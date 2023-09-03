@@ -4,12 +4,13 @@
     ViewData["Title"] = "Edycja";
 }
 
-<h1>Edycja</h1>
+<h1 class="text-center">Edycja zadania</h1>
 
-<h4>Zadanie</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+
+<div class="row justify-content-center">
+    
+    <div class="col-md-6">
+        <hr />
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="@Model.TaskListId" />
@@ -48,17 +49,14 @@
 
             </div>
             <br />
-            <div class="form-group">
+            <div class="form-group text-center">
                 <input type="submit" value="Zapisz" class="btn btn-outline-dark" />
                 <a href="@Url.Action("Details", "TaskLists", new { id = Model.TaskListId })" class="btn btn-outline-dark">Powrót</a>
             </div>
         </form>
     </div>
 </div>
-<script>
-    var isDoneCheckbox = document.getElementById("isDoneCheckbox");
-    isDoneCheckbox.checked = @Model.Task.IsDone;
-</script>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
