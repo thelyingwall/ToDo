@@ -106,8 +106,7 @@ namespace ToDo.Controllers
             taskListViewModel.TaskList = taskList;
             int pageSize = 15;
             var tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
-            int totalItems = tasks.Count();
-            int totalPages = totalItems / pageSize;
+            
 
 
             //taskListViewModel.Tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
@@ -147,6 +146,8 @@ namespace ToDo.Controllers
                     tasks = tasks.OrderBy(s => s.Title).OrderBy(s => s.IsDone).ToList();
                     break;
             }
+            int totalItems = tasks.Count();
+            int totalPages = totalItems / pageSize;
             var pagedTasks = tasks.Skip((int)((int)pageSize * page)).Take(pageSize).ToList();
             taskListViewModel.Tasks = new PaginationViewModel<Models.Task>
             {
