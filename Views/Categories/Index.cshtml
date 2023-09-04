@@ -9,14 +9,15 @@
     <div>
         <a asp-action="Create" class="btn btn-outline-dark">Nowa kategoria</a>
     </div>
-</div><br />
+</div>
+<br />
 @using (Html.BeginForm(FormMethod.Get))
-    {
-        <div class="text-end">
-            Szukaj kategorii: @Html.TextBox("SearchString")
-            <input type="submit" class="btn btn-dark" value="Szukaj" />
-        </div>
-    }
+{
+    <div class="text-end">
+        Szukaj kategorii: @Html.TextBox("SearchString")
+        <input type="submit" class="btn btn-dark" value="Szukaj" />
+    </div>
+}
 <table class="table">
     <thead>
         <tr>
@@ -27,17 +28,18 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
                     <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-outline-dark">Edytuj</a>
                     <a asp-action="Details" asp-route-id="@item.CategoryId" class="btn btn-outline-dark">Szczegóły</a>
                     <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-outline-danger">Usuń</a>
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
