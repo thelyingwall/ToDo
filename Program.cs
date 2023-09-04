@@ -24,13 +24,6 @@ namespace ToDo
 
             var app = builder.Build();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-
-                SeedData.Initialize(services);
-            }
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -56,7 +49,7 @@ namespace ToDo
                 pattern: "{controller=TaskLists}/{action=Index}/{id?}");
             app.MapRazorPages();
 
-            using(var scope = app.Services.CreateScope())
+            using (var scope = app.Services.CreateScope())
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
@@ -66,25 +59,41 @@ namespace ToDo
                     if (!await roleManager.RoleExistsAsync(role))
                         await roleManager.CreateAsync(new IdentityRole(role));
                 }
-            }
-            using (var scope = app.Services.CreateScope())
-            {
+
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-                string email = "admin@admin.com";
-                string password = "Haslo123.";
-
-                if(await userManager.FindByEmailAsync(email) == null)
+                string emailAdmin = "admin@admin.com";
+                string passwordAdmin = "Haslo123.";
+                
+                if (await userManager.FindByEmailAsync(emailAdmin) == null)
                 {
-                    var user = new IdentityUser();
-                    user.UserName= email;
-                    user.Email=email;
+                    var userAdmin = new IdentityUser();
+                    userAdmin.UserName = emailAdmin;
+                    userAdmin.Email = emailAdmin;
 
-                    var createUserResult = await userManager.CreateAsync(user, password);
+                    var createUserResult = await userManager.CreateAsync(userAdmin, passwordAdmin);
                     if (createUserResult.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(user, "admin");
+                        await userManager.AddToRoleAsync(userAdmin, "admin");
                     }
                 }
+                string emailUser = "user@user.com";
+                string passwordUser = "Haslo123.";
+
+                if (await userManager.FindByEmailAsync(emailUser) == null)
+                {
+                    var user = new IdentityUser();
+                    user.UserName = emailUser;
+                    user.Email = emailUser;
+
+                    var createUserResult = await userManager.CreateAsync(user, passwordUser);
+                    if (createUserResult.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(user, "user");
+                    }
+                }
+                var services = scope.ServiceProvider;
+
+                SeedData.Initialize(services);
             }
             app.Run();
         }

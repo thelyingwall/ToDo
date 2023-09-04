@@ -22,8 +22,8 @@ namespace ToDo.Models
                 Category zakupy = new Category { CategoryName = "Zakupy" };
                 Category studia = new Category { CategoryName = "Studia" };
 
-                TaskList l1 = new TaskList { Title = "Projekt ToDo", CategoryId = 4, Category = studia, CreateDate = DateTime.Now };
-                TaskList l2 = new TaskList { Title = "Testowa lista", CategoryId = 1, Category = praca, CreateDate = DateTime.Now };
+                TaskList l1 = new TaskList { Title = "Projekt ToDo", CategoryId = 4, Category = studia, CreateDate = DateTime.Now, User=context.Users.Single(x=>x.Email=="user@user.com")};
+                TaskList l2 = new TaskList { Title = "Testowa lista", CategoryId = 1, Category = praca, CreateDate = DateTime.Now, User = context.Users.Single(x => x.Email == "user@user.com") };
 
                 Task z1 = new Task { Title = "Zadanie 1", Description = "Opis", TaskListId = 2, TaskList = l2, PriorityId = 2, Priority = wazne };
                 Task z2 = new Task { Title = "Zadanie 2", Description = "Opis", TaskListId = 2, TaskList = l2, PriorityId = 1, Priority = pilne };
