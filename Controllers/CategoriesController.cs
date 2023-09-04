@@ -11,7 +11,7 @@ using ToDo.Models;
 
 namespace ToDo.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;

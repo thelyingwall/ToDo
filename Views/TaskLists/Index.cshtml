@@ -35,6 +35,10 @@
 
 <div class="container overflow-hidden">
     <div class="row row-cols-xs-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3">
+        @if (Model.TaskLists.Count == 0)
+        {
+            <h3>Nie znaleziono list :(</h3>
+        }
         @foreach (var item in Model.TaskLists)
         {
             <div class="">
@@ -54,7 +58,7 @@
                                 string data = item.CreateDate.Date.ToShortDateString();
                             }
                             @data
-                            </p>
+                        </p>
                         <br>
                         <p class="card-text">
                             <a asp-action="Details" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Szczegóły</a>

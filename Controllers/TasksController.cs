@@ -13,6 +13,7 @@ using ToDo.ViewModels;
 
 namespace ToDo.Controllers
 {
+    [Authorize]
     public class TasksController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,12 +24,12 @@ namespace ToDo.Controllers
         }
 
         // GET: Tasks
-        public async Task<IActionResult> Index()
-        {
-            return _context.Task != null ?
-                        View(await _context.Task.ToListAsync()) :
-                        Problem("Entity set 'ApplicationDbContext.Task'  is null.");
-        }
+        //public async Task<IActionResult> Index()
+        //{
+        //    return _context.Task != null ?
+        //                View(await _context.Task.ToListAsync()) :
+        //                Problem("Entity set 'ApplicationDbContext.Task'  is null.");
+        //}
 
         // GET: Tasks/Details/5
         public async Task<IActionResult> Details(int? id)

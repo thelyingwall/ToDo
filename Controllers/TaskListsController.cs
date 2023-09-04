@@ -39,7 +39,7 @@ namespace ToDo.Controllers
                 ViewBag.CategorySortParm = sortOrder == "Category" ? "Category_desc" : "Category";
                 ViewBag.DoneSortParm = sortOrder == "Done" ? "Done_desc" : "Done";
                 IdentityUser user = await _userManager.GetUserAsync(User);
-                listViewModel.TaskLists = await _context.TaskList.Where(s=>s.User.Id==user.Id).ToListAsync();
+                listViewModel.TaskLists = await _context.TaskList.Where(s => s.User.Id == user.Id).ToListAsync();
                 if (!String.IsNullOrEmpty(searchString))
                 {
                     listViewModel.TaskLists = listViewModel.TaskLists.Where(s => s.Title.ToUpper().Contains(searchString.ToUpper())).ToList();
@@ -110,7 +110,7 @@ namespace ToDo.Controllers
             taskListViewModel.TaskList = taskList;
             int pageSize = 15;
             var tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
-            
+
 
 
             //taskListViewModel.Tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
@@ -179,6 +179,8 @@ namespace ToDo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TaskListViewModel taskListViewModel)
         {
+            //IdentityUser user = await _userManager.GetUserAsync(User);
+            //taskListViewModel.TaskList.User = user;
             if (ModelState.IsValid)
             {
                 TaskList newtasklist = new TaskList
@@ -186,7 +188,8 @@ namespace ToDo.Controllers
                     Title = taskListViewModel.TaskList.Title,
                     Description = taskListViewModel.TaskList.Description,
                     CreateDate = DateTime.Now,
-                    Category = _context.Category.Single(x => x.CategoryId == taskListViewModel.CategoryId)
+                    Category = _context.Category.Single(x => x.CategoryId == taskListViewModel.CategoryId),
+                    User = taskListViewModel.TaskList.User
                 };
                 _context.Add(newtasklist);
                 await _context.SaveChangesAsync();
@@ -209,8 +212,10 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
+            IdentityUser user = await _userManager.GetUserAsync(User);
             TaskListViewModel taskListViewModel = new TaskListViewModel();
             taskList.Category = _context.Category.Single(x => x.CategoryId == taskList.CategoryId);
+            taskListViewModel.ajdi = user.Id;
             taskListViewModel.TaskList = taskList;
             taskListViewModel.CategoryId = taskList.CategoryId;
             taskListViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
@@ -228,6 +233,7 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
+            taskListViewModel.TaskList.User = _context.Users.Single(x => x.Id == taskListViewModel.ajdi);
 
             if (ModelState.IsValid)
             {
@@ -237,6 +243,7 @@ namespace ToDo.Controllers
                     existingTaskList.Title = taskListViewModel.TaskList.Title;
                     existingTaskList.Description = taskListViewModel.TaskList.Description;
                     existingTaskList.Category = _context.Category.Single(x => x.CategoryId == taskListViewModel.CategoryId);
+                    existingTaskList.User = taskListViewModel.TaskList.User;
                     _context.Update(existingTaskList);
                     await _context.SaveChangesAsync();
                 }
