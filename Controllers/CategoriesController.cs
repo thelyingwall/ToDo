@@ -20,16 +20,12 @@ namespace ToDo.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index(string? sortOrder, string? searchString)
+        public async Task<IActionResult> Index(string? sortOrder)
         {
             if (_context.Category != null)
             {
                 ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name_desc" : "";
                 List<Category> categoryList = await _context.Category.ToListAsync();
-                if (!String.IsNullOrEmpty(searchString))
-                {
-                    categoryList = categoryList.Where(s => s.CategoryName.ToUpper().Contains(searchString.ToUpper())).ToList();
-                }
                 switch (sortOrder)
                 {
                     case "Name_desc":

@@ -10,7 +10,7 @@
         <a asp-action="Create" class="btn btn-outline-dark">Nowy priorytet</a>
     </div>
 </div><br />
-@using (Html.BeginForm(FormMethod.Get))
+@using (Html.BeginForm())
     {
         <div class="text-end">
             Szukaj priorytetu: @Html.TextBox("SearchString")
@@ -21,7 +21,7 @@
     <thead>
         <tr>
             <th>
-                @Html.ActionLink("Nazwa", "Index", new {searchString = Context.Request.Query["searchString"], sortOrder = ViewBag.NameSortParm })
+                @Html.ActionLink("Nazwa", "Index", new { sortOrder = ViewBag.NameSortParm })
             </th>
             <th></th>
         </tr>
