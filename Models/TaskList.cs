@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace ToDo.Models
 {
@@ -12,5 +13,6 @@ namespace ToDo.Models
         public virtual ICollection<Task>? Tasks { get; set; }
         public int CategoryId { get; set; }
         public virtual Category? Category { get; set; }
+        public IdentityUser User { get; set; }
     }
 }

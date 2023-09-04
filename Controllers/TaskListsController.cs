@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Build.Framework;
@@ -15,14 +16,16 @@ using ToDo.ViewModels;
 
 namespace ToDo.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class TaskListsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public TaskListsController(ApplicationDbContext context)
+        public TaskListsController(UserManager<IdentityUser> userManager, ApplicationDbContext context)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: TaskLists
@@ -35,7 +38,8 @@ namespace ToDo.Controllers
                 ViewBag.CreateDateSortParm = sortOrder == "CreateDate" ? "CreateDate_desc" : "CreateDate";
                 ViewBag.CategorySortParm = sortOrder == "Category" ? "Category_desc" : "Category";
                 ViewBag.DoneSortParm = sortOrder == "Done" ? "Done_desc" : "Done";
-                listViewModel.TaskLists = await _context.TaskList.ToListAsync();
+                IdentityUser user = await _userManager.GetUserAsync(User);
+                listViewModel.TaskLists = await _context.TaskList.Where(s=>s.User.Id==user.Id).ToListAsync();
                 if (!String.IsNullOrEmpty(searchString))
                 {
                     listViewModel.TaskLists = listViewModel.TaskLists.Where(s => s.Title.ToUpper().Contains(searchString.ToUpper())).ToList();
