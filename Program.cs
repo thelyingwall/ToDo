@@ -60,7 +60,7 @@ namespace ToDo
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                var roles = new[] { "Admin", "Manager", "Member" };
+                var roles = new[] { "admin", "user" };
                 foreach (var role in roles)
                 {
                     if (!await roleManager.RoleExistsAsync(role))
@@ -82,9 +82,7 @@ namespace ToDo
                     var createUserResult = await userManager.CreateAsync(user, password);
                     if (createUserResult.Succeeded)
                     {
-                        userManager.AddToRoleAsync(user, "Admin");
-                        userManager.AddToRoleAsync(user, "Manager");
-                        userManager.AddToRoleAsync(user, "Member");
+                        await userManager.AddToRoleAsync(user, "admin");
                     }
                 }
             }
