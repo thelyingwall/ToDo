@@ -16,12 +16,12 @@
 
     <div class="sortowanie text-start">
         Sortuj według:
-        @Html.ActionLink("Nazwa", "Index", new { sortOrder = ViewBag.TitleSortParm }) |
-        @Html.ActionLink("Kategoria", "Index", new { sortOrder = ViewBag.CategorySortParm }) |
-        @Html.ActionLink("Data utworzenia", "Index", new { sortOrder = ViewBag.CreateDateSortParm }) |
-        @Html.ActionLink("Poziom ukończenia", "Index", new { sortOrder = ViewBag.DoneSortParm })
+        @Html.ActionLink("Nazwa", "Index", new { searchString = Context.Request.Query["searchString"],sortOrder = ViewBag.TitleSortParm }) |
+        @Html.ActionLink("Kategoria", "Index", new { searchString = Context.Request.Query["searchString"],sortOrder = ViewBag.CategorySortParm }) |
+        @Html.ActionLink("Data utworzenia", "Index", new { searchString = Context.Request.Query["searchString"],sortOrder = ViewBag.CreateDateSortParm }) |
+        @Html.ActionLink("Poziom ukończenia", "Index", new { searchString = Context.Request.Query["searchString"],sortOrder = ViewBag.DoneSortParm })
     </div>
-    @using (Html.BeginForm())
+    @using (Html.BeginForm(FormMethod.Get))
     {
         <div class="text-end">
             Szukaj listy: @Html.TextBox("SearchString")

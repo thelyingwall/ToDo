@@ -53,7 +53,7 @@
                 <div class="progress-bar bg-success" style="width: @Model?.progress%; background-color:black !important;font-size:12px;"> @Model?.progress%</div>
             </div>
             <br />
-            @using (Html.BeginForm())
+            @using (Html.BeginForm(FormMethod.Get))
             {
                 <div class="text-end">
                     Szukaj zadania: @Html.TextBox("SearchString")
@@ -66,13 +66,26 @@
                         <th>
                         </th>
                         <th>
-                            @Html.ActionLink("Tytuł", "Details", new { sortOrder = ViewBag.TitleSortParm })
+
+                            @Html.ActionLink("Tytuł", "Details", new {
+                                id=Model.TaskList.TaskListId,
+                                page = Model.Tasks.CurrentPage,
+                                searchString = Context.Request.Query["searchString"],
+                                sortOrder = ViewBag.TitleSortParm })
                         </th>
                         <th>
-                            @Html.ActionLink("Priorytet", "Details", new { sortOrder = ViewBag.PrioritySortParm })
+                            @Html.ActionLink("Priorytet", "Details", new {
+                                id=Model.TaskList.TaskListId,
+                                page = Model.Tasks.CurrentPage,
+                                searchString = Context.Request.Query["searchString"],
+                                sortOrder = ViewBag.PrioritySortParm })
                         </th>
                         <th>
-                            @Html.ActionLink("Termin ukończenia", "Details", new { sortOrder = ViewBag.DeadlineSortParm })
+                            @Html.ActionLink("Termin ukończenia", "Details", new {
+                                id=Model.TaskList.TaskListId,
+                                page = Model.Tasks.CurrentPage,
+                                searchString = Context.Request.Query["searchString"],
+                                sortOrder = ViewBag.DeadlineSortParm })
                         </th>
                         <th></th>
                     </tr>
@@ -138,7 +151,7 @@
                                 sortOrder = Context.Request.Query["sortOrder"]
                                 })">
                                 @{
-                                    int temp = i+1;
+                                    int temp = i + 1;
                                 } @temp
                             </a>
                         </li>
