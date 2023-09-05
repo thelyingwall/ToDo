@@ -1,6 +1,73 @@
-﻿@{
+﻿@model ToDo.ViewModels.StatisticsListViewModel;
+@{
     ViewData["Title"] = "Statystyki";
 }
 <h1>@ViewData["Title"]</h1>
 
 <p>Tu będą statystyki</p>
+
+<br />
+
+<canvas id="mychart"></canvas><br />
+<canvas id="mychart2"></canvas>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var productLabels = @Html.Raw(Json.Serialize(Model.stat1.Select(s => s.Key)));
+        var productData = @Html.Raw(Json.Serialize(Model.stat1.Select(s => s.Value)));
+
+        var ctx = document.getElementById('mychart').getContext('2d');
+        var mychart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: productLabels,
+                datasets: [{
+                    label: 'Ilość zadań',
+                    data: productData,
+                    backgroundColor: 'rgb(140, 195, 169)',
+                    borderColor: 'rgb(25, 135, 84)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    <script>
+        var productLabels = @Html.Raw(Json.Serialize(Model.stat2.Select(s => s.Key)));
+        var productData = @Html.Raw(Json.Serialize(Model.stat2.Select(s => s.Value)));
+
+        var ctx = document.getElementById('mychart2').getContext('2d');
+        var mychart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: productLabels,
+                datasets: [{
+                    label: 'Ilość zadań',
+                    data: productData,
+                    backgroundColor: 'rgb(140, 195, 169)',
+                    borderColor: 'rgb(25, 135, 84)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}

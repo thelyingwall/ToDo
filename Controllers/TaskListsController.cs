@@ -97,10 +97,21 @@ namespace ToDo.Controllers
             var taskList = await _context.TaskList
                 .FirstOrDefaultAsync(m => m.TaskListId == id);
 
+
             if (taskList == null)
             {
                 return NotFound();
             }
+
+            string currentUserId = _userManager.GetUserAsync(User).Result.Id; // lub inna forma identyfikacji użytkownika
+
+            // Sprawdź, czy użytkownik ma dostęp do tej listy zadań
+            if (!_context.TaskList.Any(utl => utl.User.Id == currentUserId && utl.TaskListId == id))
+            {
+                // Użytkownik nie ma dostępu do tej listy zadań, więc zwróć NotFound lub inny odpowiedni wynik
+                return NotFound();
+            }
+
             TaskListViewModel taskListViewModel = new TaskListViewModel();
 
             ViewBag.TitleSortParm = String.IsNullOrEmpty(sortOrder) ? "Title_desc" : "";
@@ -181,22 +192,22 @@ namespace ToDo.Controllers
         {
             //IdentityUser user = await _userManager.GetUserAsync(User);
             //taskListViewModel.TaskList.User = user;
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 TaskList newtasklist = new TaskList
                 {
                     Title = taskListViewModel.TaskList.Title,
                     Description = taskListViewModel.TaskList.Description,
                     CreateDate = DateTime.Now,
                     Category = _context.Category.Single(x => x.CategoryId == taskListViewModel.CategoryId),
-                    User = taskListViewModel.TaskList.User
-                };
+                    User = await _userManager.GetUserAsync(User)
+            };
                 _context.Add(newtasklist);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            taskListViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
-            return View(taskListViewModel);
+            //}
+            //taskListViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
+            //return View(taskListViewModel);
         }
 
         // GET: TaskLists/Edit/5
@@ -212,10 +223,17 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
-            IdentityUser user = await _userManager.GetUserAsync(User);
+            IdentityUser user = await _userManager.GetUserAsync(User); // lub inna forma identyfikacji użytkownika
+
+            // Sprawdź, czy użytkownik ma dostęp do tej listy zadań
+            if (!_context.TaskList.Any(utl => utl.User.Id == user.Id && utl.TaskListId == id))
+            {
+                // Użytkownik nie ma dostępu do tej listy zadań, więc zwróć NotFound lub inny odpowiedni wynik
+                return NotFound();
+            }
+            
             TaskListViewModel taskListViewModel = new TaskListViewModel();
             taskList.Category = _context.Category.Single(x => x.CategoryId == taskList.CategoryId);
-            taskListViewModel.ajdi = user.Id;
             taskListViewModel.TaskList = taskList;
             taskListViewModel.CategoryId = taskList.CategoryId;
             taskListViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
@@ -233,35 +251,37 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
-            taskListViewModel.TaskList.User = _context.Users.Single(x => x.Id == taskListViewModel.ajdi);
 
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
+            //{
+            try
             {
-                try
-                {
-                    var existingTaskList = await _context.TaskList.FindAsync(taskListViewModel.TaskList.TaskListId);
-                    existingTaskList.Title = taskListViewModel.TaskList.Title;
-                    existingTaskList.Description = taskListViewModel.TaskList.Description;
-                    existingTaskList.Category = _context.Category.Single(x => x.CategoryId == taskListViewModel.CategoryId);
-                    existingTaskList.User = taskListViewModel.TaskList.User;
-                    _context.Update(existingTaskList);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TaskListExists(taskListViewModel.TaskList.TaskListId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Details", "TaskLists", new { id });
+                //IdentityUser user = await _userManager.GetUserAsync(User);
+                //taskListViewModel.TaskList.User = 
+
+                var existingTaskList = await _context.TaskList.FindAsync(taskListViewModel.TaskList.TaskListId);
+                existingTaskList.Title = taskListViewModel.TaskList.Title;
+                existingTaskList.Description = taskListViewModel.TaskList.Description;
+                existingTaskList.Category = _context.Category.Single(x => x.CategoryId == taskListViewModel.CategoryId);
+                existingTaskList.User = await _userManager.GetUserAsync(User);
+                _context.Update(existingTaskList);
+                await _context.SaveChangesAsync();
             }
-            taskListViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
-            return View(taskListViewModel);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TaskListExists(taskListViewModel.TaskList.TaskListId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction("Details", "TaskLists", new { id });
+            //}
+            //taskListViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
+            //return View(taskListViewModel);
         }
 
         //GET: TaskLists/Delete/5
@@ -276,6 +296,14 @@ namespace ToDo.Controllers
                 .FirstOrDefaultAsync(m => m.TaskListId == id);
             if (taskList == null)
             {
+                return NotFound();
+            }
+            IdentityUser user = await _userManager.GetUserAsync(User); // lub inna forma identyfikacji użytkownika
+
+            // Sprawdź, czy użytkownik ma dostęp do tej listy zadań
+            if (!_context.TaskList.Any(utl => utl.User.Id == user.Id && utl.TaskListId == id))
+            {
+                // Użytkownik nie ma dostępu do tej listy zadań, więc zwróć NotFound lub inny odpowiedni wynik
                 return NotFound();
             }
 

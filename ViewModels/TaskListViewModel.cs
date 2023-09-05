@@ -12,7 +12,6 @@ namespace ToDo.ViewModels
         public int? PriorityId { get; set; }
         public int? progress { get; set; }
         public string? searchString { get; set;}
-        public string? ajdi { get; set;}
 
     }
 }

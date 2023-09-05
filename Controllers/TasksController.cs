@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,10 +18,12 @@ namespace ToDo.Controllers
     public class TasksController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public TasksController(ApplicationDbContext context)
+        public TasksController(UserManager<IdentityUser> userManager, ApplicationDbContext context)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Tasks
@@ -45,7 +48,15 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
+            IdentityUser user = await _userManager.GetUserAsync(User); // lub inna forma identyfikacji użytkownika
             task.TaskList = _context.TaskList.Single(x => x.TaskListId == task.TaskListId);
+            // Sprawdź, czy użytkownik ma dostęp do tej listy zadań
+            if (!_context.TaskList.Any(utl => utl.User.Id == user.Id && utl.TaskListId == task.TaskList.TaskListId))
+            {
+                // Użytkownik nie ma dostępu do tej listy zadań, więc zwróć NotFound lub inny odpowiedni wynik
+                return NotFound();
+            }
+
             task.Priority = _context.Priority.Single(x => x.PriorityId == task.PriorityId);
             Console.WriteLine(task.ToString());
             return View(task);
@@ -73,7 +84,7 @@ namespace ToDo.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TaskViewModel taskViewModel, IFormFile? imageFile)
-        { 
+        {
             if (ModelState.IsValid)
             {
 
@@ -111,13 +122,21 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
+            
             TaskViewModel taskViewModel = new TaskViewModel();
+            IdentityUser user = await _userManager.GetUserAsync(User); // lub inna forma identyfikacji użytkownika
             task.TaskList = _context.TaskList.Single(x => x.TaskListId == task.TaskListId);
+            // Sprawdź, czy użytkownik ma dostęp do tej listy zadań
+            if (!_context.TaskList.Any(utl => utl.User.Id == user.Id && utl.TaskListId == task.TaskList.TaskListId))
+            {
+                // Użytkownik nie ma dostępu do tej listy zadań, więc zwróć NotFound lub inny odpowiedni wynik
+                return NotFound();
+            }
             task.Priority = _context.Priority.Single(x => x.PriorityId == task.PriorityId);
             taskViewModel.Task = task;
             taskViewModel.PreviousImagePath = task.ImagePath;
             taskViewModel.TaskListId = task.TaskListId;
-            taskViewModel.Deadline=task.Deadline;
+            taskViewModel.Deadline = task.Deadline;
             taskViewModel.PriorityId = task.PriorityId;
             taskViewModel.Priorities = _context.Priority.OrderBy(x => x.PriorityName).Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
             Console.WriteLine(taskViewModel.Task.ToString());
@@ -189,7 +208,14 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
-
+            IdentityUser user = await _userManager.GetUserAsync(User); // lub inna forma identyfikacji użytkownika
+            task.TaskList = _context.TaskList.Single(x => x.TaskListId == task.TaskListId);
+            // Sprawdź, czy użytkownik ma dostęp do tej listy zadań
+            if (!_context.TaskList.Any(utl => utl.User.Id == user.Id && utl.TaskListId == task.TaskList.TaskListId))
+            {
+                // Użytkownik nie ma dostępu do tej listy zadań, więc zwróć NotFound lub inny odpowiedni wynik
+                return NotFound();
+            }
             return View(task);
         }
 
