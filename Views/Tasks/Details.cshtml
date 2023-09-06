@@ -5,7 +5,7 @@
 }
 <partial name="_Background" />
 <div class="no-gradient justify-content-center mx-auto" style="margin-top:10%;width:70%;">
-<h1>Szczegóły zadania</h1>
+    <h1>Szczegóły zadania</h1>
 
     <hr />
     <dl class="row">
@@ -56,12 +56,53 @@
             <dt class="col-sm-4">
                 Obrazek
             </dt>
-            <img src="@Url.Content(Model.ImagePath)" style="100%">
+            <img src="@Url.Content(Model.ImagePath)" style="100%" class="image-modal-trigger">
         }
     </dl>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.TaskId" class="btn btn-outline-dark">Edycja</a>
-    <a href="@Url.Action("Details", "TaskLists", new { id = Model.TaskListId })" class="btn btn-outline-dark">Powrót</a>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model?.TaskId" class="btn btn-outline-dark">Edycja</a>
+        <a href="@Url.Action("Details", "TaskLists", new { id = Model.TaskListId })" class="btn btn-outline-dark">Powrót</a>
+    </div>
 </div>
+
+<div id="imageModal" class="modal">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modalImage" src="">
 </div>
+
+<script>
+    var modal = document.getElementById("imageModal");
+    var modalImg = document.getElementById("modalImage");
+    var imgTrigger = document.querySelector(".image-modal-trigger");
+    var closeModal = document.getElementsByClassName("close-modal");
+
+    var isModalOpen = false;
+
+    imgTrigger.onclick = function () {
+        if (isModalOpen) {
+            modal.style.display = "none";
+            isModalOpen = false;
+        } else {
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            isModalOpen = true;
+        }
+    }
+
+    closeModal.onclick = function () {
+        modal.style.display = "none";
+        isModalOpen = false;
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            isModalOpen = false;
+        }
+    }
+    modal.onclick = function () {
+        modal.style.display = "none";
+        isModalOpen = false;
+    }
+</script>

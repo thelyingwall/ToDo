@@ -45,7 +45,7 @@ li {
     transition: 0.2s;
 }
 
-.dock-container ul li:hover {
+.dock-container ul li:hover:not(form) {
     transform: scale(1.4);
 }
 
@@ -63,7 +63,6 @@ ul {
 .dock {
     height: 60px;
     border-radius: 16px;
-    display: flex;
     justify-content: center;
     position: absolute;
     /*    bottom: 20px;*/
@@ -78,13 +77,52 @@ ul {
     justify-content: center;
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.85);
-    border-radius: 16px;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 20rem;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
 }
 /*/////////////////////////////////////////////*/
+/* Styl dla modalu */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 50px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 85%;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+    color: white;
+}
+
+/* Styl dla przycisku do otwierania modalu */
+.image-modal-trigger {
+    cursor: pointer;
+}
+
+    /* Animacja przy otwieraniu modalu */
+    .image-modal-trigger:focus + .modal {
+        display: block;
+        animation: zoomIn 0.s;
+    }
 
 .card:hover {
     background: linear-gradient(48deg, #f2a017, #ffdc4f, #f7683e, #ffc100, #f3bd12, #fb7123, #df3d0d);
@@ -116,7 +154,7 @@ footer {
 }
 
 .no-gradient {
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(20px);
@@ -136,7 +174,7 @@ footer {
     border-radius: 30px;
     opacity: 0.9;
     transform: translateX(22vw);
-    margin-top:15%;
+    margin-top: 15%;
 }
 
 .pagination > li > a {

@@ -43,20 +43,20 @@ namespace ToDo.Controllers
                 .GroupBy(t => t.IsDone)
                 .Select(g => new StatisticViewModel
                 {
-                    Key = g.Key.ToString(),
+                    Key = g.Key == true ? "Wykonano" : "Nie wykonano",
                     Value = g.Count()
                 })
                 .ToList();
 
             var taskCountByPriority = tasks
-    .Where(t => t.Priority != null)
-    .GroupBy(t => t.Priority.PriorityName)
-    .Select(g => new StatisticViewModel
-    {
-        Key = g.Key,
-        Value = g.Count()
-    })
-    .ToList();
+                .Where(t => t.Priority != null)
+                .GroupBy(t => t.Priority.PriorityName)
+                .Select(g => new StatisticViewModel
+                {
+                    Key = g.Key,
+                    Value = g.Count()
+                })
+                .ToList();
 
             var viewModel = new StatisticsListViewModel
             {
