@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Sczegóły";
 }
-
+<partial name="_Background" />
+<div class="no-gradient justify-content-center mx-auto" style="margin-top:15%;width:70%;">
 <h1>Szczegóły</h1>
 
 <div>
@@ -21,4 +22,5 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.PriorityId" class="btn btn-outline-dark">Edycja</a>
     <a asp-action="Index" class="btn btn-outline-dark">Powrót</a>
+</div>
 </div>

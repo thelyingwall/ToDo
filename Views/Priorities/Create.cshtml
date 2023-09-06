@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Nowy priorytet";
 }
-
+<partial name="_Background" />
+<div class="no-gradient justify-content-center mx-auto" style="margin-top:15%;width:70%;">
 <h1 class="text-center">Nowy priorytet</h1>
 
 
@@ -24,7 +25,7 @@
         </form>
     </div>
 </div>
-
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

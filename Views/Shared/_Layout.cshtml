@@ -54,16 +54,21 @@
                     <li>
                         <div class="name"><a class="nav-link text-dark" asp-area="" asp-controller="TaskLists" asp-action="Index">Listy zadań</a></div>
                     </li>
-                    <li class="li-2">
-                        <div class="name"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Statistics">Statystyki</a></div>
-                    </li>
-                    <li class="li-3">
-                        <div class="name"><a class="nav-link text-dark" asp-area="" asp-controller="Priorities" asp-action="Index">Priorytety</a></div>
-                    </li>
-                    <li class="li-4">
-                        <div class="name"> <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Kategorie</a></div>
-                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="li-2">
+                            <div class="name"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Statistics">Statystyki</a></div>
+                        </li>
+                        <li class="li-3">
+                            <div class="name"><a class="nav-link text-dark" asp-area="" asp-controller="Priorities" asp-action="Index">Priorytety</a></div>
+                        </li>
+                        <li class="li-4">
+                            <div class="name"> <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Kategorie</a></div>
+                        </li>
+                        
+                    }
                     <partial name="_LoginPartial" />
+                    
                 </ul>
 
             </div>

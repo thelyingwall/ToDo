@@ -2,9 +2,9 @@
 @{
     ViewData["Title"] = "Statystyki";
 }
-<h1>@ViewData["Title"]</h1>
-
-
+<partial name="_Background" />
+<div class="no-gradient justify-content-center mx-auto" style="margin-top:10%;width:70%;">
+<h1 class="text-center">@ViewData["Title"]</h1>
 <br />
 <h3 class="text-center">Ilość zadań według stanu wykonania</h3>
 <canvas id="mychart2"></canvas>
@@ -12,7 +12,7 @@
 <h3 class ="text-center">Ilość zadań według priorytetu</h3>
 <canvas id="mychart"></canvas>
 
-
+</div>
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -27,8 +27,7 @@
                 datasets: [{
                     label: 'Ilość zadań',
                     data: productData,
-                    backgroundColor: 'blue',
-                    borderColor: 'rgb(25, 135, 84)',
+                    backgroundColor: 'black',
                     borderWidth: 1
                 }]
             }
@@ -46,8 +45,7 @@
                 datasets: [{
                     label: 'Ilość zadań',
                     data: productData,
-                    backgroundColor: 'blue',
-                    borderColor: 'blue',
+                    backgroundColor: 'black',
                     borderWidth: 1
                 }]
             }
