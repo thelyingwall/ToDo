@@ -4,12 +4,15 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Tu będą statystyki</p>
 
 <br />
-
-<canvas id="mychart"></canvas><br />
+<h3 class="text-center">Ilość zadań według stanu wykonania</h3>
 <canvas id="mychart2"></canvas>
+<br />
+<h3 class ="text-center">Ilość zadań według priorytetu</h3>
+<canvas id="mychart"></canvas>
+
+
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -24,27 +27,17 @@
                 datasets: [{
                     label: 'Ilość zadań',
                     data: productData,
-                    backgroundColor: 'rgb(140, 195, 169)',
+                    backgroundColor: 'blue',
                     borderColor: 'rgb(25, 135, 84)',
                     borderWidth: 1
                 }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
-                        }
-                    }
-                }
             }
         });
     </script>
     <script>
         var productLabels = @Html.Raw(Json.Serialize(Model.stat2.Select(s => s.Key)));
         var productData = @Html.Raw(Json.Serialize(Model.stat2.Select(s => s.Value)));
-
+        var barColors = ["gold", "darkorange"];
         var ctx = document.getElementById('mychart2').getContext('2d');
         var mychart = new Chart(ctx, {
             type: 'bar',
@@ -53,20 +46,10 @@
                 datasets: [{
                     label: 'Ilość zadań',
                     data: productData,
-                    backgroundColor: 'rgb(140, 195, 169)',
-                    borderColor: 'rgb(25, 135, 84)',
+                    backgroundColor: 'blue',
+                    borderColor: 'blue',
                     borderWidth: 1
                 }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
-                        }
-                    }
-                }
             }
         });
     </script>

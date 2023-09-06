@@ -35,8 +35,47 @@ a, a:hover {
 hr {
     opacity: 100%;
 }
+/*/////////////////////////////////////////////*/
+li {
+    
+    list-style: none;
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    vertical-align: bottom;transition: 0.2s;
+}
+    li:hover {
+        transform: scale(1.4);
+    }
+.nav-link{
+    padding-bottom:0;
+}
+.dock {
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+/*    bottom: 20px;*/
+    left: 50%;
+    transform: translateX(-50%);
+}
+.dock-container {
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+    /*/////////////////////////////////////////////*/
 
-.card:hover {
+    .card:hover {
     background: linear-gradient(48deg, #f2a017, #ffdc4f, #f7683e, #ffc100, #f3bd12, #fb7123, #df3d0d);
     background-size: 1400% 1400%;
     -webkit-animation: AnimationName 32s ease infinite;

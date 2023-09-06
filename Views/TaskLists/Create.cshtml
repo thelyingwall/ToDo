@@ -3,12 +3,10 @@
 @{
     ViewData["Title"] = "Nowa lista zadań";
 }
-
+<partial name="_Background" />
+<div class="no-gradient justify-content-center mx-auto" style="margin-top:15%;width:70%;">
 <h1 class="text-center">Nowa lista zadań</h1>
 
-
-<div class="row justify-content-center">
-    <div class="col-md-6">
         <hr />
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -33,7 +31,6 @@
             </div>
         </form>
     </div>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

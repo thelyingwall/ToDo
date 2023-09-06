@@ -68,24 +68,24 @@
                         <th>
 
                             @Html.ActionLink("Tytuł", "Details", new {
-                                id=Model.TaskList.TaskListId,
-                                page = Model.Tasks.CurrentPage,
-                                searchString = Context.Request.Query["searchString"],
-                                sortOrder = ViewBag.TitleSortParm })
+                            id=Model.TaskList.TaskListId,
+                            page = Model.Tasks.CurrentPage,
+                            searchString = Context.Request.Query["searchString"],
+                            sortOrder = ViewBag.TitleSortParm })
                         </th>
                         <th>
                             @Html.ActionLink("Priorytet", "Details", new {
-                                id=Model.TaskList.TaskListId,
-                                page = Model.Tasks.CurrentPage,
-                                searchString = Context.Request.Query["searchString"],
-                                sortOrder = ViewBag.PrioritySortParm })
+                            id=Model.TaskList.TaskListId,
+                            page = Model.Tasks.CurrentPage,
+                            searchString = Context.Request.Query["searchString"],
+                            sortOrder = ViewBag.PrioritySortParm })
                         </th>
                         <th>
                             @Html.ActionLink("Termin ukończenia", "Details", new {
-                                id=Model.TaskList.TaskListId,
-                                page = Model.Tasks.CurrentPage,
-                                searchString = Context.Request.Query["searchString"],
-                                sortOrder = ViewBag.DeadlineSortParm })
+                            id=Model.TaskList.TaskListId,
+                            page = Model.Tasks.CurrentPage,
+                            searchString = Context.Request.Query["searchString"],
+                            sortOrder = ViewBag.DeadlineSortParm })
                         </th>
                         <th></th>
                     </tr>

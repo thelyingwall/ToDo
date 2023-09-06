@@ -3,64 +3,65 @@
 @{
     ViewData["Title"] = "Szczegóły";
 }
-
+<partial name="_Background" />
+<div class="no-gradient justify-content-center mx-auto" style="margin-top:10%;width:70%;">
 <h1>Szczegóły zadania</h1>
 
-<div>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Tytuł
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Opis
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Czy zadanie zostało wykonane?
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             <i class="@(Model.IsDone==true ? "bi bi-check-square-fill" : "bi bi-square")"></i>
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Data utworzenia
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.CreateDate)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Termin ukończenia
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Deadline)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Lista zadań
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.TaskList.Title)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             Priorytet
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.Priority.PriorityName)
         </dd>
         @if (Model.ImagePath != null)
         {
-            <dt class="col-sm-2">
+            <dt class="col-sm-4">
                 Obrazek
             </dt>
             <img src="@Url.Content(Model.ImagePath)" style="100%">
         }
     </dl>
-</div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.TaskId" class="btn btn-outline-dark">Edycja</a>
     <a href="@Url.Action("Details", "TaskLists", new { id = Model.TaskListId })" class="btn btn-outline-dark">Powrót</a>
+</div>
 </div>

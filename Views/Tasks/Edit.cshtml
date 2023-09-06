@@ -3,58 +3,54 @@
 @{
     ViewData["Title"] = "Edycja";
 }
+<partial name="_Background" />
+<div class="no-gradient justify-content-center mx-auto" style="margin-top:10%;width:70%;">
+    <h1 class="text-center">Edycja zadania</h1>
 
-<h1 class="text-center">Edycja zadania</h1>
+    <hr />
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="@Model.TaskListId" />
+        <div class="form-group">
+            <label asp-for="@Model.Task.Title" class="control-label">Tytuł</label>
+            <input asp-for="@Model.Task.Title" class="form-control" />
+            <span asp-validation-for="@Model.Task.Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Task.Description" class="control-label">Opis</label>
+            <textarea asp-for="@Model.Task.Description" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="@Model.Task.Description" class="text-danger"></span>
+        </div>
+        <div class="form-group form-check">
+            <label class="form-check-label">
+                Czy zadanie zostało wykonane?
+                <input id="isDoneCheckbox" asp-for="@Model.Task.IsDone" class="form-check-input" type="checkbox" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Deadline" class="control-label">Termin ukończenia</label>
+            <input asp-for="@Model.Deadline" class="form-control" />
+            <span asp-validation-for="@Model.Deadline" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>Priorytet</label>
+            <select name="PriorityId" class="form-select" asp-for="PriorityId" asp-items="@Model.Priorities">
+            </select>
+        </div><br />
+        <div class="form-group">
 
+            @if (!string.IsNullOrEmpty(Model.Task.ImagePath))
+            {
+                <img src="@Url.Content(Model.Task.ImagePath)" style="width:100%;" />
+            }<input asp-for="@Model.Task.ImagePath" name="imageFile" type="file" class="form-control" accept="image/*">
 
-<div class="row justify-content-center">
-    
-    <div class="col-md-6">
-        <hr />
-        <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="@Model.TaskListId" />
-            <div class="form-group">
-                <label asp-for="@Model.Task.Title" class="control-label">Tytuł</label>
-                <input asp-for="@Model.Task.Title" class="form-control" />
-                <span asp-validation-for="@Model.Task.Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Task.Description" class="control-label">Opis</label>
-                <textarea asp-for="@Model.Task.Description" class="form-control" rows="5"></textarea>
-                <span asp-validation-for="@Model.Task.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    Czy zadanie zostało wykonane?
-                    <input id="isDoneCheckbox" asp-for="@Model.Task.IsDone" class="form-check-input" type="checkbox" />
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Deadline" class="control-label">Termin ukończenia</label>
-                <input asp-for="@Model.Deadline" class="form-control" />
-                <span asp-validation-for="@Model.Deadline" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label>Priorytet</label>
-                <select name="PriorityId" class="form-select" asp-for="PriorityId" asp-items="@Model.Priorities">
-                </select>
-            </div><br />
-            <div class="form-group">
-                
-                @if (!string.IsNullOrEmpty(Model.Task.ImagePath))
-                {
-                    <img src="@Url.Content(Model.Task.ImagePath)" style="width:100%;" />
-                }<input asp-for="@Model.Task.ImagePath" name="imageFile" type="file" class="form-control" accept="image/*">
-
-            </div>
-            <br />
-            <div class="form-group text-center">
-                <input type="submit" value="Zapisz" class="btn btn-outline-dark" />
-                <a href="@Url.Action("Details", "TaskLists", new { id = Model.TaskListId })" class="btn btn-outline-dark">Powrót</a>
-            </div>
-        </form>
-    </div>
+        </div>
+        <br />
+        <div class="form-group text-center">
+            <input type="submit" value="Zapisz" class="btn btn-outline-dark" />
+            <a href="@Url.Action("Details", "TaskLists", new { id = Model.TaskListId })" class="btn btn-outline-dark">Powrót</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
