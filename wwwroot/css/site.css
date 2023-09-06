@@ -37,29 +37,40 @@ hr {
 }
 /*/////////////////////////////////////////////*/
 li {
-    
     list-style: none;
     display: inline-block;
     align-items: center;
     justify-content: center;
-    vertical-align: bottom;transition: 0.2s;
+    vertical-align: bottom;
+    transition: 0.2s;
 }
-    li:hover {
-        transform: scale(1.4);
-    }
-.nav-link{
-    padding-bottom:0;
+
+.dock-container ul li:hover {
+    transform: scale(1.4);
 }
+
+
+.nav-link {
+    /*    padding-bottom: 0;*/
+}
+
+ul {
+    padding-left: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
 .dock {
     height: 60px;
     border-radius: 16px;
     display: flex;
     justify-content: center;
     position: absolute;
-/*    bottom: 20px;*/
+    /*    bottom: 20px;*/
     left: 50%;
     transform: translateX(-50%);
 }
+
 .dock-container {
     padding: 3px;
     display: flex;
@@ -73,9 +84,9 @@ li {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
 }
-    /*/////////////////////////////////////////////*/
+/*/////////////////////////////////////////////*/
 
-    .card:hover {
+.card:hover {
     background: linear-gradient(48deg, #f2a017, #ffdc4f, #f7683e, #ffc100, #f3bd12, #fb7123, #df3d0d);
     background-size: 1400% 1400%;
     -webkit-animation: AnimationName 32s ease infinite;
@@ -116,11 +127,24 @@ footer {
     padding-bottom: 5%;
 }
 
+.no-gradient-nothing {
+    background: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 30px;
+    opacity: 0.9;
+    transform: translateX(22vw);
+    margin-top:15%;
+}
+
 .pagination > li > a {
     background-color: transparent !Important;
     color: black;
     border: solid 1px black;
 }
+
 .pagination > .disabled > a {
     background-color: transparent !Important;
     color: grey !Important;
@@ -141,11 +165,11 @@ footer {
     border: solid 1px black !Important;
 }
 
-.pagination > li > a:hover, .pagination > .active > a:hover {
-    background-color: black !Important;
-    color: white;
-    border: solid 1px black;
-}
+    .pagination > li > a:hover, .pagination > .active > a:hover {
+        background-color: black !Important;
+        color: white;
+        border: solid 1px black;
+    }
 
 @-webkit-keyframes AnimationName {
     0% {

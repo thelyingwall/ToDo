@@ -8,7 +8,7 @@
         <li class="li-10">
         <a  class="nav-link text-dark">@User.Identity?.Name</a>
     </li>
-        <li class="li-11">
+    <li>
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "TaskLists", new { area = "" })">
             <button type="submit" class="nav-link btn btn-link text-dark"><i class="bi bi-box-arrow-right"></i></button>
         </form>
@@ -17,10 +17,10 @@
 else
 {
         <li class="li-111">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Rejestracja</a>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">REJESTRACJA</a>
     </li>
         <li class="li-1111">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logowanie</a>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">LOGOWANIE</a>
     </li>
 }
 
