@@ -58,7 +58,11 @@
                 <div class="text-end">
                     Szukaj zadania: @Html.TextBox("SearchString")
                     <input type="submit" class="btn btn-dark" value="Szukaj" />
+                    <span class="btn btn-outline-dark clearFilters">
+                        @Html.ActionLink("Wyczyść filtry", "Details", new { taskListId = Model.TaskList.TaskListId,searchString = "" })
+                    </span>
                 </div>
+
             }<br />
             <table class="table">
                 <thead>

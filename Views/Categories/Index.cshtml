@@ -17,6 +17,9 @@
     <div class="text-end">
         Szukaj kategorii: @Html.TextBox("SearchString")
         <input type="submit" class="btn btn-dark" value="Szukaj" />
+            <span class="btn btn-outline-dark clearFilters">
+                @Html.ActionLink("Wyczyść filtry", "Index", new { searchString = "" })
+            </span>
     </div>
 }
 <table class="table">

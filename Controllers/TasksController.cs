@@ -26,14 +26,6 @@ namespace ToDo.Controllers
             _userManager = userManager;
         }
 
-        // GET: Tasks
-        //public async Task<IActionResult> Index()
-        //{
-        //    return _context.Task != null ?
-        //                View(await _context.Task.ToListAsync()) :
-        //                Problem("Entity set 'ApplicationDbContext.Task'  is null.");
-        //}
-
         // GET: Tasks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -48,12 +40,10 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
-            IdentityUser user = await _userManager.GetUserAsync(User); // lub inna forma identyfikacji użytkownika
+            IdentityUser user = await _userManager.GetUserAsync(User);
             task.TaskList = _context.TaskList.Single(x => x.TaskListId == task.TaskListId);
-            // Sprawdź, czy użytkownik ma dostęp do tej listy zadań
             if (!_context.TaskList.Any(utl => utl.User.Id == user.Id && utl.TaskListId == task.TaskList.TaskListId))
             {
-                // Użytkownik nie ma dostępu do tej listy zadań, więc zwróć NotFound lub inny odpowiedni wynik
                 return NotFound();
             }
 
@@ -124,12 +114,10 @@ namespace ToDo.Controllers
             }
             
             TaskViewModel taskViewModel = new TaskViewModel();
-            IdentityUser user = await _userManager.GetUserAsync(User); // lub inna forma identyfikacji użytkownika
+            IdentityUser user = await _userManager.GetUserAsync(User);
             task.TaskList = _context.TaskList.Single(x => x.TaskListId == task.TaskListId);
-            // Sprawdź, czy użytkownik ma dostęp do tej listy zadań
             if (!_context.TaskList.Any(utl => utl.User.Id == user.Id && utl.TaskListId == task.TaskList.TaskListId))
             {
-                // Użytkownik nie ma dostępu do tej listy zadań, więc zwróć NotFound lub inny odpowiedni wynik
                 return NotFound();
             }
             task.Priority = _context.Priority.Single(x => x.PriorityId == task.PriorityId);
@@ -208,12 +196,10 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
-            IdentityUser user = await _userManager.GetUserAsync(User); // lub inna forma identyfikacji użytkownika
+            IdentityUser user = await _userManager.GetUserAsync(User);
             task.TaskList = _context.TaskList.Single(x => x.TaskListId == task.TaskListId);
-            // Sprawdź, czy użytkownik ma dostęp do tej listy zadań
             if (!_context.TaskList.Any(utl => utl.User.Id == user.Id && utl.TaskListId == task.TaskList.TaskListId))
             {
-                // Użytkownik nie ma dostępu do tej listy zadań, więc zwróć NotFound lub inny odpowiedni wynik
                 return NotFound();
             }
             return View(task);

@@ -10,6 +10,14 @@ html {
     }
 }
 
+.clearFilters a {
+    color: black;
+}
+
+.clearFilters:hover a{
+    color: white;
+}
+
 html {
     position: relative;
     min-height: 100%;

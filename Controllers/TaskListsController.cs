@@ -44,7 +44,6 @@ namespace ToDo.Controllers
                 {
                     listViewModel.TaskLists = listViewModel.TaskLists.Where(s => s.Title.ToUpper().Contains(searchString.ToUpper())).ToList();
                 }
-                //listViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
                 foreach (var item in listViewModel.TaskLists)
                 {
                     item.Tasks = _context.Task.Where(x => x.TaskListId == item.TaskListId).ToList();
@@ -103,12 +102,9 @@ namespace ToDo.Controllers
                 return NotFound();
             }
 
-            string currentUserId = _userManager.GetUserAsync(User).Result.Id; // lub inna forma identyfikacji użytkownika
-
-            // Sprawdź, czy użytkownik ma dostęp do tej listy zadań
+            string currentUserId = _userManager.GetUserAsync(User).Result.Id;
             if (!_context.TaskList.Any(utl => utl.User.Id == currentUserId && utl.TaskListId == id))
             {
-                // Użytkownik nie ma dostępu do tej listy zadań, więc zwróć NotFound lub inny odpowiedni wynik
                 return NotFound();
             }
 
@@ -122,10 +118,6 @@ namespace ToDo.Controllers
             int pageSize = 15;
             var tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
 
-
-
-            //taskListViewModel.Tasks = _context.Task.Where(x => x.TaskListId == id).ToList();
-            //taskListViewModel.Priorities = _context.Priority.OrderBy(x => x.PriorityName).Select(x => new SelectListItem(x.PriorityName, x.PriorityId.ToString())).ToList();
             taskListViewModel.TaskList.Category = _context.Category.Single(x => x.CategoryId == taskList.CategoryId);
             int progress = ((float)tasks.Count(x => x.IsDone == true) == 0 && (float)tasks.Count() == 0) ? 0 : (int)Math.Round((float)tasks.Count(x => x.IsDone == true) / (float)tasks.Count() * 100f);
 
@@ -190,24 +182,17 @@ namespace ToDo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TaskListViewModel taskListViewModel)
         {
-            //IdentityUser user = await _userManager.GetUserAsync(User);
-            //taskListViewModel.TaskList.User = user;
-            //if (ModelState.IsValid)
-            //{
-                TaskList newtasklist = new TaskList
-                {
-                    Title = taskListViewModel.TaskList.Title,
-                    Description = taskListViewModel.TaskList.Description,
-                    CreateDate = DateTime.Now,
-                    Category = _context.Category.Single(x => x.CategoryId == taskListViewModel.CategoryId),
-                    User = await _userManager.GetUserAsync(User)
+            TaskList newtasklist = new TaskList
+            {
+                Title = taskListViewModel.TaskList.Title,
+                Description = taskListViewModel.TaskList.Description,
+                CreateDate = DateTime.Now,
+                Category = _context.Category.Single(x => x.CategoryId == taskListViewModel.CategoryId),
+                User = await _userManager.GetUserAsync(User)
             };
-                _context.Add(newtasklist);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            //}
-            //taskListViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
-            //return View(taskListViewModel);
+            _context.Add(newtasklist);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: TaskLists/Edit/5
@@ -223,15 +208,12 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
-            IdentityUser user = await _userManager.GetUserAsync(User); // lub inna forma identyfikacji użytkownika
-
-            // Sprawdź, czy użytkownik ma dostęp do tej listy zadań
+            IdentityUser user = await _userManager.GetUserAsync(User);
             if (!_context.TaskList.Any(utl => utl.User.Id == user.Id && utl.TaskListId == id))
             {
-                // Użytkownik nie ma dostępu do tej listy zadań, więc zwróć NotFound lub inny odpowiedni wynik
                 return NotFound();
             }
-            
+
             TaskListViewModel taskListViewModel = new TaskListViewModel();
             taskList.Category = _context.Category.Single(x => x.CategoryId == taskList.CategoryId);
             taskListViewModel.TaskList = taskList;
@@ -251,14 +233,8 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
-
-            //if (ModelState.IsValid)
-            //{
             try
             {
-                //IdentityUser user = await _userManager.GetUserAsync(User);
-                //taskListViewModel.TaskList.User = 
-
                 var existingTaskList = await _context.TaskList.FindAsync(taskListViewModel.TaskList.TaskListId);
                 existingTaskList.Title = taskListViewModel.TaskList.Title;
                 existingTaskList.Description = taskListViewModel.TaskList.Description;
@@ -279,9 +255,6 @@ namespace ToDo.Controllers
                 }
             }
             return RedirectToAction("Details", "TaskLists", new { id });
-            //}
-            //taskListViewModel.Categories = _context.Category.OrderBy(x => x.CategoryName).Select(x => new SelectListItem(x.CategoryName, x.CategoryId.ToString())).ToList();
-            //return View(taskListViewModel);
         }
 
         //GET: TaskLists/Delete/5
@@ -298,12 +271,9 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
-            IdentityUser user = await _userManager.GetUserAsync(User); // lub inna forma identyfikacji użytkownika
-
-            // Sprawdź, czy użytkownik ma dostęp do tej listy zadań
+            IdentityUser user = await _userManager.GetUserAsync(User); 
             if (!_context.TaskList.Any(utl => utl.User.Id == user.Id && utl.TaskListId == id))
             {
-                // Użytkownik nie ma dostępu do tej listy zadań, więc zwróć NotFound lub inny odpowiedni wynik
                 return NotFound();
             }
 

@@ -6,78 +6,86 @@
 }
 <partial name="_Background" />
 <div class="no-gradient justify-content-center mx-auto" style="margin-top:10%;width:100%;min-height:80vh;">
-<div style="display: flex; justify-content: space-between; align-items: center;">
-    <h1>Twoje listy zadań</h1>
-    <div>
-        <a asp-action="Create" class="btn btn-outline-dark">Nowa lista</a>
-    </div>
-</div>
-<br />
-<div class="row row-cols-xs-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2" style="align-items: center;">
-
-    <div class="sortowanie text-start">
-        Sortuj według:
-        @Html.ActionLink("Nazwa", "Index", new { searchString = Context.Request.Query["searchString"],sortOrder = ViewBag.TitleSortParm }) |
-        @Html.ActionLink("Kategoria", "Index", new { searchString = Context.Request.Query["searchString"],sortOrder = ViewBag.CategorySortParm }) |
-        @Html.ActionLink("Data utworzenia", "Index", new { searchString = Context.Request.Query["searchString"],sortOrder = ViewBag.CreateDateSortParm }) |
-        @Html.ActionLink("Poziom ukończenia", "Index", new { searchString = Context.Request.Query["searchString"],sortOrder = ViewBag.DoneSortParm })
-    </div>
-    @using (Html.BeginForm(FormMethod.Get))
-    {
-        <div class="text-end">
-            Szukaj listy: @Html.TextBox("SearchString")
-            <input type="submit" class="btn btn-dark" value="Szukaj" />
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>Twoje listy zadań</h1>
+        <div>
+            <a asp-action="Create" class="btn btn-outline-dark">Nowa lista</a>
         </div>
-    }
-</div>
-<br />
+    </div>
+    <br />
+    <div class="row row-cols-xs-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-2" style="align-items: center;">
 
-
-
-<div class="container overflow-hidden">
-    <div class="row row-cols-xs-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3">
-        @if (Model.TaskLists.Count == 0)
+        <div class="sortowanie text-start">
+            Sortuj według:
+            @Html.ActionLink("Nazwa", "Index", new { searchString = Context.Request.Query["searchString"],sortOrder = ViewBag.TitleSortParm }) |
+            @Html.ActionLink("Kategoria", "Index", new { searchString = Context.Request.Query["searchString"],sortOrder = ViewBag.CategorySortParm }) |
+            @Html.ActionLink("Data utworzenia", "Index", new { searchString = Context.Request.Query["searchString"],sortOrder = ViewBag.CreateDateSortParm }) |
+            @Html.ActionLink("Poziom ukończenia", "Index", new { searchString = Context.Request.Query["searchString"],sortOrder = ViewBag.DoneSortParm })
+        </div>
+        @using (Html.BeginForm(FormMethod.Get))
         {
-            <h3>Nie znaleziono list :(</h3>
-        }
-        @foreach (var item in Model.TaskLists)
-        {
-            <div class="">
-                <div class="card" style="height:200px;">
-                    <div class="card-body text-break">
-                        <div style="display: flex; justify-content: space-between; align-items: center;" class="text-break">
-                            <a asp-action="Details" asp-route-id="@item.TaskListId" style="text-decoration:none;color:black;">
-                                <h5 class="card-title text-break"> @Html.DisplayFor(modelItem => item.Title)</h5>
-                            </a>
-                            <a asp-action="Delete" asp-route-id="@item.TaskListId">
-                                <i style="text-decoration:none;color:black;" class="bi bi-x-lg"></i>
-                            </a>
-                        </div>
-                        <p style="font-size:12px;">
-                            @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                            @{
-                                string data = item.CreateDate.Date.ToShortDateString();
-                            }
-                            @data
-                        </p>
-                        <br>
-                        <p class="card-text">
-                            <a asp-action="Details" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Szczegóły</a>
-                            <a asp-action="Edit" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Edycja</a>
-                        </p>
-                        @{
-                            float temp = (float)@item.Tasks.Count(x => x.IsDone == true) / (float)@item.Tasks.Count();
-                            int wykonano = ((float)@item.Tasks.Count(x => x.IsDone == true) == 0 && (float)@item.Tasks.Count() == 0) ? 0 : (int)Math.Round(temp * 100f);
-                        }
-                        <div class="progress" role="progressbar" aria-label="Success example" aria-valuemin="0" aria-valuemax="100" style="height:10px; ">
-                            <div class="progress-bar bg-success" style="width: @wykonano%; background-color:black !important;"></div>
-                        </div>
+            <div class="text-end">
+                Szukaj listy: @Html.TextBox("SearchString")
+                <input type="submit" class="btn btn-dark" value="Szukaj" />
 
-                        <p class="card-text"><small class="text-body-secondary">Ukończono: @wykonano%</small></p>
-                    </div>
-                </div>
+                <span class="btn btn-outline-dark clearFilters">
+                    @Html.ActionLink("Wyczyść filtry", "Index", new { searchString = "" })
+                </span>
             </div>
         }
+
+
+
+
     </div>
-</div>
+    <br />
+
+
+
+    <div class="container overflow-hidden">
+        <div class="row row-cols-xs-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3">
+            @if (Model.TaskLists.Count == 0)
+            {
+                <h3>Nie znaleziono list :(</h3>
+            }
+            @foreach (var item in Model.TaskLists)
+            {
+                <div class="">
+                    <div class="card" style="height:200px;">
+                        <div class="card-body text-break">
+                            <div style="display: flex; justify-content: space-between; align-items: center;" class="text-break">
+                                <a asp-action="Details" asp-route-id="@item.TaskListId" style="text-decoration:none;color:black;">
+                                    <h5 class="card-title text-break"> @Html.DisplayFor(modelItem => item.Title)</h5>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.TaskListId">
+                                    <i style="text-decoration:none;color:black;" class="bi bi-x-lg"></i>
+                                </a>
+                            </div>
+                            <p style="font-size:12px;">
+                                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                                @{
+                                    string data = item.CreateDate.Date.ToShortDateString();
+                                }
+                                @data
+                            </p>
+                            <br>
+                            <p class="card-text">
+                                <a asp-action="Details" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Szczegóły</a>
+                                <a asp-action="Edit" asp-route-id="@item.TaskListId" class="btn btn-outline-dark">Edycja</a>
+                            </p>
+                            @{
+                                float temp = (float)@item.Tasks.Count(x => x.IsDone == true) / (float)@item.Tasks.Count();
+                                int wykonano = ((float)@item.Tasks.Count(x => x.IsDone == true) == 0 && (float)@item.Tasks.Count() == 0) ? 0 : (int)Math.Round(temp * 100f);
+                            }
+                            <div class="progress" role="progressbar" aria-label="Success example" aria-valuemin="0" aria-valuemax="100" style="height:10px; ">
+                                <div class="progress-bar bg-success" style="width: @wykonano%; background-color:black !important;"></div>
+                            </div>
+
+                            <p class="card-text"><small class="text-body-secondary">Ukończono: @wykonano%</small></p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
