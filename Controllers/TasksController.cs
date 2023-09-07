@@ -112,7 +112,7 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
-            
+
             TaskViewModel taskViewModel = new TaskViewModel();
             IdentityUser user = await _userManager.GetUserAsync(User);
             task.TaskList = _context.TaskList.Single(x => x.TaskListId == task.TaskListId);

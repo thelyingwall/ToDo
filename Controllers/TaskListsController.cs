@@ -271,7 +271,7 @@ namespace ToDo.Controllers
             {
                 return NotFound();
             }
-            IdentityUser user = await _userManager.GetUserAsync(User); 
+            IdentityUser user = await _userManager.GetUserAsync(User);
             if (!_context.TaskList.Any(utl => utl.User.Id == user.Id && utl.TaskListId == id))
             {
                 return NotFound();
